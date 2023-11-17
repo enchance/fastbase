@@ -35,6 +35,7 @@ class Account(DTMixin, UuidPK, AccountBase, table=True):
     __tablename__ = 'auth_user'
     birthday: date | None = Field(nullable=True)
     gender: str = Field(max_length=20, nullable=True)
+    permissions: list[str] = Field(sa_column=sa.Column(ARRAY(String), default=[]))
     meta: dict = Field(sa_column=sa.Column(JSON, default={}))
 
     def __str__(self):
@@ -44,7 +45,7 @@ class Account(DTMixin, UuidPK, AccountBase, table=True):
 class Group(IntPK, SQLModel, table=True):
     __tablename__ = 'auth_group'
     name: str = Field(max_length=20, unique=True)
-    permissions: list[str] = Field(sa_column=sa.Column(ARRAY(String)), default=['foo.bar'])
+    permissions: list[str] = Field(sa_column=sa.Column(ARRAY(String), default=['foo.bar']))
     created_at: datetime = Field(sa_column=sa.Column(sa.DateTime(timezone=True), nullable=False,
                                                      server_default=text('CURRENT_TIMESTAMP')))
 
