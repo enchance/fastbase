@@ -1,8 +1,8 @@
 import sqlalchemy as sa
 from uuid import UUID, uuid4
 from datetime import datetime, date
-from sqlmodel import Field, SQLModel, Session, text, select, JSON, ARRAY, String
-# from sqlalchemy.dialects.postgresql import ARRAY, array
+from sqlmodel import Field, SQLModel, Session, text, select, JSON, String
+from sqlalchemy.dialects.postgresql import ARRAY
 
 from .utils import modstr
 
@@ -35,8 +35,8 @@ class Account(DTMixin, UuidPK, AccountBase, table=True):
     __tablename__ = 'auth_user'
     birthday: date | None = Field(nullable=True)
     gender: str = Field(max_length=20, nullable=True)
-    permissions: list[str] = Field(sa_column=sa.Column(ARRAY(String), default=[]))
-    meta: dict = Field(sa_column=sa.Column(JSON, default={}))
+    permissions: list[str] = Field(sa_column=sa.Column(ARRAY(String)), default=[])
+    meta: dict = Field(sa_column=sa.Column(JSON), default={})
 
     def __str__(self):
         return modstr(self, 'username', 'email')
@@ -45,7 +45,7 @@ class Account(DTMixin, UuidPK, AccountBase, table=True):
 class Group(IntPK, SQLModel, table=True):
     __tablename__ = 'auth_group'
     name: str = Field(max_length=20, unique=True)
-    permissions: list[str] = Field(sa_column=sa.Column(ARRAY(String), default=['foo.bar']))
+    permissions: list[str] = Field(sa_column=sa.Column(ARRAY(String)), default=[])
     created_at: datetime = Field(sa_column=sa.Column(sa.DateTime(timezone=True), nullable=False,
                                                      server_default=text('CURRENT_TIMESTAMP')))
 
