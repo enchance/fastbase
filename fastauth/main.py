@@ -18,18 +18,20 @@ class FastAuth(APIRouter):
         self.project_id = project_id
         self.depends = Dependencies(iss=iss, project_id=project_id)
 
+
     @staticmethod
     async def demo():
+        # TESTME: Untested
         return 'it works'
 
-    @staticmethod
-    async def google_register():
-        pass
 
     @staticmethod
-    async def google_signin():
+    async def email_register():
+        # TESTME: Untested
         pass
 
+
     @staticmethod
-    async def private_demo():
+    async def email_signin():
+        # TESTME: Untested
         pass
