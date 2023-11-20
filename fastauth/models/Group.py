@@ -9,6 +9,7 @@ from ..utils import modstr
 class Group(IntPK, SQLModel, table=True):
     __tablename__ = 'auth_group'
     name: str = Field(max_length=20, unique=True)
+    description: str = Field(max_length=199, default='')
     permissions: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
 
     def __str__(self):
