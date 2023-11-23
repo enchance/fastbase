@@ -16,6 +16,8 @@ author_fk_nullable = Field(foreign_key=USER_PK, nullable=True)
 class UserBase(SQLModel):
     username: str = Field(max_length=190, unique=True)
     email: str = Field(max_length=190)
+    roles: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
+    groups: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
     permissions: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
     meta: dict = Field(sa_column=Column(JSON), default={})
 
