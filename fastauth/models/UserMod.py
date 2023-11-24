@@ -19,17 +19,15 @@ author_fk = Field(foreign_key=USER_PK)
 author_fk_nullable = Field(foreign_key=USER_PK, nullable=True)
 
 
-class UserBase(SQLModel):
+
+class UserMod(DTMixin, UuidPK, SQLModel):
+    __tablename__ = USER_TABLE
     username: str = Field(max_length=190, unique=True)
     email: str = Field(max_length=190, unique=True)
     display: str | None = Field(max_length=199, nullable=True)
     groups: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
     permissions: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
     meta: dict = Field(sa_column=Column(JSON), default={})
-
-
-class UserMod(DTMixin, UuidPK, UserBase):
-    __tablename__ = USER_TABLE
     gender: str | None = Field(max_length=20, nullable=True)
     timezone: str | None = Field(max_length=190, default='+0000')
 

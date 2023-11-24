@@ -1,4 +1,5 @@
 from uuid import UUID
+from datetime import date
 from pydantic import BaseModel
 
 
@@ -14,3 +15,5 @@ class UserObjectSchema(BaseModel):
     display: str
     username: str
     timezone: str
+    birthday: date | None
+    gender: str | None
