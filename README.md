@@ -9,7 +9,7 @@ Installation
 -----------
 
 ```bash
-pip install fastbase/home/enchance/Dev/venv/fastbase-_XKMLCSM-py3.11/bin/python
+pip install fastbase
 ```
 
 or
