@@ -10,7 +10,7 @@ Installation
 
 ```bash
 pip install fastbase/home/enchance/Dev/venv/fastbase-_XKMLCSM-py3.11/bin/python
-``
+```
 
 or
 ```bash
@@ -23,12 +23,14 @@ Instructions
 
 Fastbase assumes a headless setup using a frontend such as React, Angular, etc.
 
-- `Firebase Auth`: Authentication.
-- `Fastbase`: Authorization.
+- **Authentication:** Managed by Firebase Auth
+- **Authorization:** Managed by Fastbase
 
-Process:
+### Process:
 
-1. Actual authentication happens in the frontend (JS) after which an `idtoken` is recieved.
-1. The `idtoken` is sent to the server for authorization purposes.
-1. At first use using the `/signin` endpoint Fastbase checks if the user alread exists in the database. If user is new then a record is created using SQLModel.
+1. Authentication happens in the frontend (JS) using the official Firebase JS package. An `idtoken` will be 
+   generated if successful and attach this to your `Authorization` header.  
+1. Upon reaching the server the `idtoken` is verified.
+1. At first use, using the `/signin` endpoint Fastbase checks if the user alread exists in the database. If user is 
+   new then a record is created using SQLModel.
 
