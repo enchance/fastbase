@@ -320,3 +320,5 @@ bh_unicode_properties.cache
 GitHub.sublime-settings
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,python,sublimetext
+
+docker/
