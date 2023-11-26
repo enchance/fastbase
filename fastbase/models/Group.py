@@ -21,7 +21,8 @@ class Group(IntPK, SQLModel, table=True):
 
     # TESTME: Untested
     @classmethod
-    async def create(cls, session: AsyncSession, name: str,  permissions: set, description: str | None = None) ->Self:
+    async def create(cls, session: AsyncSession, *, name: str,  permissions: set,
+                     description: str | None = None) ->Self:
         """Create a new group. Requires group.create permission."""
         try:
             group = cls(name=name, permissions=permissions, description=description)
