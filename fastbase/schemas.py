@@ -1,6 +1,7 @@
 from uuid import UUID
 from datetime import datetime, date
 from pydantic import BaseModel
+from enum import StrEnum, auto
 
 
 
@@ -17,3 +18,8 @@ class UserSchema(BaseModel):
     timezone: str
     birthday: date | None
     created_at: datetime
+
+
+class GroupEnum(StrEnum):
+    AdminGroup = 'AdminGroup'
+    AccountGroup = 'AccountGroup'
