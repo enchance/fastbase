@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 
 from .mixins import IntPK
 from ..utils import modstr
-from fastbase import ic
+from ..schemas import *
 
 
 class Group(IntPK, SQLModel, table=True):
@@ -21,9 +21,8 @@ class Group(IntPK, SQLModel, table=True):
 
     # TESTME: Untested
     @classmethod
-    async def create(cls, session: AsyncSession, name: str,  permissions: set,
-                     description: str | None = None) ->Self:
-        """Create a new group"""
+    async def create(cls, session: AsyncSession, name: str,  permissions: set, description: str | None = None) ->Self:
+        """Create a new group. Requires group.create permission."""
         try:
             group = cls(name=name, permissions=permissions, description=description)
             session.add(group)
@@ -35,10 +34,30 @@ class Group(IntPK, SQLModel, table=True):
 
     # TESTME: Untested
     @classmethod
-    async def append(cls, session: AsyncSession, *, id: int, permissions: set) -> Self:
-        """Append new permissions to group"""
+    async def append(cls, session: AsyncSession, id: int, permissions: set) -> Self:
+        """Append new permissions to group. Requires group.update permission."""
         if group := await session.get(cls, id):
             group.permissions = {*group.permissions, *permissions}
+            session.add(group)
+            await session.commit()
+        return group
+
+    # TESTME: Untested
+    @classmethod
+    async def reset(cls, session: AsyncSession, id: int, permissions: set = None) -> Self:
+        """Reset permissions. Requires group.reset permission."""
+        if group := await session.get(cls, id):
+            group.permissions = permissions or {i for i in GroupEnum}
+            session.add(group)
+            await session.commit()
+        return group
+
+    # TESTME: Untested
+    @classmethod
+    async def describe(cls, session: AsyncSession, id: int, description: str) -> Self:
+        """Change group description. Requires group.update permission."""
+        if group := await session.get(cls, id):
+            group.description = description
             session.add(group)
             await session.commit()
         return group
