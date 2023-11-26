@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fastbase"
-version = "0.2.2"
+version = "0.2.3"
 description = ""
 authors = ["enchance <enchance@gmail.com>"]
 readme = "README.md"
