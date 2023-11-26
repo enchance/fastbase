@@ -27,9 +27,9 @@ class UserMod(DTMixin, UuidPK, SQLModel):
     display: str | None = Field(max_length=199, nullable=True)
     groups: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
     permissions: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
-    meta: dict = Field(sa_column=Column(JSON), default={})
     gender: str | None = Field(max_length=20, nullable=True)
     timezone: str | None = Field(max_length=190, default='+0000')
+    meta: dict = Field(sa_column=Column(JSON), default={})
 
     def __str__(self):
         return modstr(self, 'username', 'email')

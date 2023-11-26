@@ -9,7 +9,7 @@ class FirebaseConfig(BaseModel):
     project_id: str
 
 
-class UserObjectSchema(BaseModel):
+class UserSchema(BaseModel):
     id: UUID
     email: str
     display: str
