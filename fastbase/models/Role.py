@@ -15,7 +15,7 @@ class Role(IntPK, SQLModel, table=True):
     description: str | None = Field(max_length=199, default='')
     groups: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
 
-    def __str__(self):
+    def __repr__(self):
         return modstr(self, 'name', 'description')
 
     # TESTME: Untested

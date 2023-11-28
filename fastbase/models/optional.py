@@ -19,7 +19,7 @@ class TaxonomyMod(IntPK, SQLModel):
 
     author: 'User' = Relationship(back_populates='author_tax')       # noqa
 
-    def __str__(self):
+    def __repr__(self):
         return modstr(self, 'name')
 
 
@@ -35,5 +35,5 @@ class OptionMod(UpdatedAtMixin, SQLModel):
     # yyy: str = Field(max_length=199)
     # __table_args__ = (UniqueConstraint('xxx', 'yyy'),)
 
-    def __str__(self):
+    def __repr__(self):
         return modstr(self, 'key')

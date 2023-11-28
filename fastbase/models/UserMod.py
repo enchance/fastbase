@@ -31,7 +31,7 @@ class UserMod(DTMixin, UuidPK, SQLModel):
     timezone: str | None = Field(max_length=190, default='+0000')
     meta: dict = Field(sa_column=Column(JSON), default={})
 
-    def __str__(self):
+    def __repr__(self):
         return modstr(self, 'username', 'email')
 
     @classmethod
