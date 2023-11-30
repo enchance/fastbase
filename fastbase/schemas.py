@@ -15,11 +15,10 @@ class GroupEnum(StrEnum):
     AccountGroup = 'AccountGroup'
 
 
-class UserSchema(BaseModel):
+class UserBaseSchema(BaseModel):
     id: UUID
     email: str
     display: str
     username: str
     timezone: str
-    birthday: date | None
     created_at: datetime

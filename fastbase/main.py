@@ -18,13 +18,14 @@ class Fastbase(APIRouter):
     def __init__(self, *,
                  # firebase: FirebaseConfig,
                  user_model: Type[U],
+                 user_schema: Type[UserBaseSchema] = UserBaseSchema,
                  user_defaults: dict | None = None,
                  session: Callable[[], AsyncSession],
                  post_create: Callable[[AsyncSession, U], Awaitable[None]] = None):
         super().__init__()
         self.User = user_model
         self.user_defaults = user_defaults or {}
-        # self.user_schema = user_schema
+        self.user_schema = user_schema
         # self.iss = firebase.iss
         # self.project_id = firebase.project_id
         # self.depends = Dependencies(iss=firebase.iss, project_id=firebase.project_id)
@@ -43,7 +44,7 @@ class Fastbase(APIRouter):
         router = APIRouter()
         get_session = self.get_session
 
-        @router.post('/signin', response_model=UserSchema)
+        @router.post('/signin', response_model=self.user_schema)
         async def signin(token: Annotated[str, Body()],
                          session: Annotated[AsyncSession, Depends(get_session)]) -> Type[Self]:
             try:
@@ -63,7 +64,6 @@ class Fastbase(APIRouter):
                     self.post_create and await self.post_create(session, user)
                 else:
                     user = await self.User.get_by_email(session, email)
-                # TODO: cache user
                 return user
             raise InvalidToken()
 
@@ -86,34 +86,3 @@ class Fastbase(APIRouter):
     #         return 'PLACEHOLDER: Email change password'
     #
     #     return router
-
-
-
-
-# def verify_device(appcheck: Annotated[str, Header()],
-#                   token: Annotated[str, Header()]) -> dict:
-#     """
-#     Verify AppCheck and FirebaseAuth tokens. Both must pass to continue.
-#     :param appcheck:    App AppCheck jwt
-#     :param token:       User idtoken jwt
-#     :return:            Verified token
-#     """
-#     try:
-#         appcheck_data = app_check.verify_token(appcheck)
-#         if appcheck_data['iss'] != self.firebase_iss:
-#             raise Exception()
-#     except Exception as err:
-#         logger.critical(err)
-#         raise InvalidToken('INVALID_DEVICE_TOKEN')
-#
-#     try:
-#         idtoken_data = auth.verify_id_token(token)
-#         if idtoken_data['aud'] != self.firebase_project_id:
-#             raise Exception()
-#         return idtoken_data
-#     except auth.RevokedIdTokenError as err:
-#         logger.critical(err)
-#         raise InvalidToken('TOKEN_REVOKED')
-#     except Exception as err:
-#         logger.critical(err)
-#         raise InvalidToken()
