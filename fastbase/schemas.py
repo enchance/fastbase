@@ -10,6 +10,11 @@ class FirebaseConfig(BaseModel):
     project_id: str
 
 
+class GroupEnum(StrEnum):
+    AdminGroup = 'AdminGroup'
+    AccountGroup = 'AccountGroup'
+
+
 class UserSchema(BaseModel):
     id: UUID
     email: str
@@ -18,8 +23,3 @@ class UserSchema(BaseModel):
     timezone: str
     birthday: date | None
     created_at: datetime
-
-
-class GroupEnum(StrEnum):
-    AdminGroup = 'AdminGroup'
-    AccountGroup = 'AccountGroup'

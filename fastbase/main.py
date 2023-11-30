@@ -7,7 +7,6 @@ from icecream import ic
 
 from .models import *
 from .schemas import *
-from .dependencies import Dependencies
 from .exceptions import InvalidToken
 
 
@@ -20,18 +19,20 @@ class Fastbase(APIRouter):
                  # firebase: FirebaseConfig,
                  user_model: Type[U],
                  user_defaults: dict | None = None,
-                 user_schema: Type[BaseModel] | None = UserSchema,
                  session: Callable[[], AsyncSession],
-                 post_create: Callable[[AsyncSession, U], Awaitable[None]]):
+                 post_create: Callable[[AsyncSession, U], Awaitable[None]] = None):
         super().__init__()
         self.User = user_model
         self.user_defaults = user_defaults or {}
-        self.user_schema = user_schema
+        # self.user_schema = user_schema
         # self.iss = firebase.iss
         # self.project_id = firebase.project_id
         # self.depends = Dependencies(iss=firebase.iss, project_id=firebase.project_id)
         self.get_session = session
         self.post_create = post_create
+
+    def __repr__(self):
+        return modstr(self)
 
     @staticmethod
     async def demo():
@@ -42,7 +43,7 @@ class Fastbase(APIRouter):
         router = APIRouter()
         get_session = self.get_session
 
-        @router.post('/signin', response_model=self.user_schema)
+        @router.post('/signin', response_model=UserSchema)
         async def signin(token: Annotated[str, Body()],
                          session: Annotated[AsyncSession, Depends(get_session)]) -> Type[Self]:
             try:
@@ -59,7 +60,7 @@ class Fastbase(APIRouter):
                     session.add(user)
                     await session.commit()
                     await session.refresh(user)
-                    await self.post_create(session, user)
+                    self.post_create and await self.post_create(session, user)
                 else:
                     user = await self.User.get_by_email(session, email)
                 # TODO: cache user
@@ -68,20 +69,51 @@ class Fastbase(APIRouter):
 
         return router
 
-    @staticmethod
-    def get_email_routers() -> APIRouter:
-        router = APIRouter()
+    # @staticmethod
+    # def get_email_routers() -> APIRouter:
+    #     router = APIRouter()
+    #
+    #     # TODO: Placeholder
+    #     @router.post('/email-lostpassword')
+    #     async def email_lost_password():
+    #         # TODO: Email lost password
+    #         return 'PLACEHOLDER: Email lost password'
+    #
+    #     # TODO: Placeholder
+    #     @router.post('/email-changepassword')
+    #     async def email_lost_password():
+    #         # TODO: Email change password
+    #         return 'PLACEHOLDER: Email change password'
+    #
+    #     return router
 
-        # TODO: Placeholder
-        @router.post('/email-lostpassword')
-        async def email_lost_password():
-            # TODO: Email lost password
-            return 'PLACEHOLDER: Email lost password'
 
-        # TODO: Placeholder
-        @router.post('/email-changepassword')
-        async def email_lost_password():
-            # TODO: Email change password
-            return 'PLACEHOLDER: Email change password'
 
-        return router
+
+# def verify_device(appcheck: Annotated[str, Header()],
+#                   token: Annotated[str, Header()]) -> dict:
+#     """
+#     Verify AppCheck and FirebaseAuth tokens. Both must pass to continue.
+#     :param appcheck:    App AppCheck jwt
+#     :param token:       User idtoken jwt
+#     :return:            Verified token
+#     """
+#     try:
+#         appcheck_data = app_check.verify_token(appcheck)
+#         if appcheck_data['iss'] != self.firebase_iss:
+#             raise Exception()
+#     except Exception as err:
+#         logger.critical(err)
+#         raise InvalidToken('INVALID_DEVICE_TOKEN')
+#
+#     try:
+#         idtoken_data = auth.verify_id_token(token)
+#         if idtoken_data['aud'] != self.firebase_project_id:
+#             raise Exception()
+#         return idtoken_data
+#     except auth.RevokedIdTokenError as err:
+#         logger.critical(err)
+#         raise InvalidToken('TOKEN_REVOKED')
+#     except Exception as err:
+#         logger.critical(err)
+#         raise InvalidToken()
