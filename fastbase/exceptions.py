@@ -26,3 +26,8 @@ class InvalidToken(AppException):
 class AuthError(AppException):
     code = 401
     message = 'ACCOUNT_AUTHENTICATION'
+
+
+class UserNotFoundError(AppException):
+    code = 404
+    message = 'USER_NOT_FOUND'
