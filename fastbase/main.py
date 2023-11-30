@@ -7,6 +7,7 @@ from pydantic import EmailStr
 from icecream import ic
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio.engine import AsyncEngine
+from redis import Redis
 
 from .models import *
 from .schemas import *
@@ -14,16 +15,19 @@ from .exceptions import InvalidToken
 
 
 
-U = TypeVar('U', bound=UserMod)
+# U = TypeVar('U', bound=UserMod)
 
 
 class FastbaseV2:
     _instance = None
     _lock = threading.Lock()
     engine: AsyncEngine
-    # User: Type[U]
+    redis: Redis | None
+    User: Type[UserMod]
+    user_schema: Type[UserBaseSchema]
     # Group = Gr
     # Role = Rl
+    post_create: Callable[[AsyncSession, UserMod], Awaitable[None]]
 
     def __new__(cls):
         if cls._instance is None:
@@ -32,19 +36,27 @@ class FastbaseV2:
                     cls._instance = super().__new__(cls)
         return cls._instance
 
-    def initialize(self, engine: AsyncEngine):
+    def initialize(self, *,
+                   engine: AsyncEngine,
+                   redis: Redis | None = None,
+                   user_model: Type[UserMod],
+                   user_schema: Type[UserBaseSchema] = UserBaseSchema,
+                   post_create: Callable[[AsyncSession, UserMod], Awaitable[None]] = None):
         self.engine = engine
-        # self.User = user_model
+        self.redis = redis
+        self.User = user_model
+        self.user_schema = user_schema
+        self.post_create = post_create
 
 
 class Fastbase(APIRouter):
     def __init__(self, *,
                  # firebase: FirebaseConfig,
-                 user_model: Type[U],
+                 user_model: Type[UserMod],
                  user_schema: Type[UserBaseSchema] = UserBaseSchema,
                  user_defaults: dict | None = None,
                  session: Callable[[], AsyncSession],
-                 post_create: Callable[[AsyncSession, U], Awaitable[None]] = None):
+                 post_create: Callable[[AsyncSession, UserMod], Awaitable[None]] = None):
         super().__init__()
         self.User = user_model
         self.user_defaults = user_defaults or {}
