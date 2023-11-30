@@ -1,9 +1,12 @@
+import threading
 from typing import Type, Annotated, Self, Callable, Awaitable, TypeVar
 from fastapi import APIRouter, Header, Depends, Body
 from sqlmodel.ext.asyncio.session import AsyncSession
 from firebase_admin import auth
 from pydantic import EmailStr
 from icecream import ic
+from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio.engine import AsyncEngine
 
 from .models import *
 from .schemas import *
@@ -12,6 +15,26 @@ from .exceptions import InvalidToken
 
 
 U = TypeVar('U', bound=UserMod)
+
+
+class FastbaseV2:
+    _instance = None
+    _lock = threading.Lock()
+    engine: AsyncEngine
+    # User: Type[U]
+    # Group = Gr
+    # Role = Rl
+
+    def __new__(cls):
+        if cls._instance is None:
+            with cls._lock:
+                if not cls._instance:
+                    cls._instance = super().__new__(cls)
+        return cls._instance
+
+    def initialize(self, engine: AsyncEngine):
+        self.engine = engine
+        # self.User = user_model
 
 
 class Fastbase(APIRouter):
