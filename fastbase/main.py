@@ -53,12 +53,6 @@ class Fastbase:
         self.post_create = post_create
 
 
-    # async def get_session(self) -> AsyncSession:
-    #     async_session = sessionmaker(bind=self.engine, autoflush=False, expire_on_commit=False, class_=AsyncSession) # noqa
-    #     async with async_session() as session:
-    #         yield session
-
-
     # TESTME: Untested
     @staticmethod
     def verify_idtoken(authorization: Annotated[str, Header()]) -> str:
@@ -91,7 +85,6 @@ class Fastbase:
                 user = await self.User.get_by_email(session, email)
                 return user
         except Exception as e:
-            ic(e)
             raise UserNotFoundError()
 
 
