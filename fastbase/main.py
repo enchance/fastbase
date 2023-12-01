@@ -19,7 +19,7 @@ from .globals import ic
 U = TypeVar('U', bound=UserMod)
 
 
-class FastbaseV2:
+class Fastbase:
     _instance = None
     _lock = threading.Lock()
     engine: AsyncEngine
@@ -149,37 +149,3 @@ class FastbaseV2:
                     return user
             raise InvalidToken()
         return router
-
-
-# class Fastbase(APIRouter):
-#     def __init__(self, *,
-#                  user_model: Type[UserMod],
-#                  user_schema: Type[UserBaseSchema] = UserBaseSchema,
-#                  user_defaults: dict | None = None,
-#                  session: Callable[[], AsyncSession],
-#                  post_create: Callable[[AsyncSession, UserMod], Awaitable[None]] = None):
-#         super().__init__()
-#         self.User = user_model
-#         self.user_defaults = user_defaults or {}
-#         self.user_schema = user_schema
-#         self.get_session = session
-#         self.post_create = post_create
-#
-#
-#     # @staticmethod
-#     # def get_email_routers() -> APIRouter:
-#     #     router = APIRouter()
-#     #
-#     #     # TODO: Placeholder
-#     #     @router.post('/email-lostpassword')
-#     #     async def email_lost_password():
-#     #         # TODO: Email lost password
-#     #         return 'PLACEHOLDER: Email lost password'
-#     #
-#     #     # TODO: Placeholder
-#     #     @router.post('/email-changepassword')
-#     #     async def email_lost_password():
-#     #         # TODO: Email change password
-#     #         return 'PLACEHOLDER: Email change password'
-#     #
-#     #     return router
