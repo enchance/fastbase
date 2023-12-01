@@ -5,11 +5,6 @@ from enum import StrEnum, auto
 
 
 
-class FirebaseConfig(BaseModel):
-    iss: str
-    project_id: str
-
-
 class GroupEnum(StrEnum):
     AdminGroup = 'AdminGroup'
     AccountGroup = 'AccountGroup'

@@ -4,6 +4,7 @@ from sqlalchemy import Column
 from sqlmodel import SQLModel, Field, String, JSON, Relationship, select, exists
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.ext.asyncio.engine import AsyncEngine
 from sqlalchemy.exc import NoResultFound
 from datetime import date
 from pydantic import EmailStr
@@ -33,6 +34,7 @@ class UserMod(DTMixin, UuidPK, SQLModel):
     def __repr__(self):
         return modstr(self, 'username', 'email')
 
+    # TESTME: Untested
     @classmethod
     async def get_by_email(cls, session: AsyncSession, email: str) -> Type[Self]:
         """
@@ -47,6 +49,7 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         data = execdata.one()
         return data
 
+    # TESTME: Untested
     @classmethod
     async def get_by_id(cls, session: AsyncSession, uid: str) -> Type[Self]:
         """
@@ -59,6 +62,7 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         data = await session.get(cls, UUID(uid))
         return data
 
+    # TESTME: Untested
     @classmethod
     async def exists(cls, session: AsyncSession, email: EmailStr) -> bool:
         """Check if a user exists"""
