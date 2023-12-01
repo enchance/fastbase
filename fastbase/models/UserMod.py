@@ -30,8 +30,9 @@ class UserMod(DTMixin, UuidPK, SQLModel):
     permissions: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
     gender: str | None = Field(max_length=20, nullable=True)
     timezone: str | None = Field(max_length=190, default='+0000')
-    is_superuser: bool = Field(default=False)
     is_verified: bool = Field(default=True)
+    is_active: bool = Field(default=True)
+    is_banned: bool = Field(default=False)
     meta: dict = Field(sa_column=Column(JSON), default={})
 
     def __repr__(self):
