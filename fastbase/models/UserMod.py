@@ -25,10 +25,13 @@ class UserMod(DTMixin, UuidPK, SQLModel):
     username: str = Field(max_length=190, unique=True)
     email: str = Field(max_length=190, unique=True)
     display: str = Field(max_length=199)
+    role: str = Field(max_length=20, default='user')
     groups: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
     permissions: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
     gender: str | None = Field(max_length=20, nullable=True)
     timezone: str | None = Field(max_length=190, default='+0000')
+    is_superuser: bool = Field(default=False)
+    is_verified: bool = Field(default=True)
     meta: dict = Field(sa_column=Column(JSON), default={})
 
     def __repr__(self):
