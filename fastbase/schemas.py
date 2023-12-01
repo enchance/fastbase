@@ -5,12 +5,12 @@ from enum import StrEnum, auto
 
 
 
-class FirebaseConfig(BaseModel):
-    iss: str
-    project_id: str
+class GroupEnum(StrEnum):
+    AdminGroup = 'AdminGroup'
+    AccountGroup = 'AccountGroup'
 
 
-class UserSchema(BaseModel):
+class UserBaseSchema(BaseModel):
     id: UUID
     email: str
     display: str
@@ -18,8 +18,3 @@ class UserSchema(BaseModel):
     timezone: str
     birthday: date | None
     created_at: datetime
-
-
-class GroupEnum(StrEnum):
-    AdminGroup = 'AdminGroup'
-    AccountGroup = 'AccountGroup'
