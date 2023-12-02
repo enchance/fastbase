@@ -16,10 +16,82 @@ from .exceptions import InvalidToken, UserNotFoundError
 from .globals import ic
 
 
+
 U = TypeVar('U', bound=UserMod)
 
 
-class Fastbase:
+class FastbaseDependency:
+    engine: AsyncEngine
+    User: Type[UserMod]
+
+    # TESTME: Untested
+    @staticmethod
+    def verify_idtoken(authorization: Annotated[str, Header()]) -> str:
+        """
+        Dependency to verify if an idtoken is valid.
+        :param authorization:   Google idtoken
+        :return:                Token data
+        :raises InvalidToken:
+        """
+        try:
+            token = authorization.split(' ')[1]
+            token_data = auth.verify_id_token(token)
+            return token_data.pop('email')
+        except Exception:
+            raise InvalidToken()
+
+    # TESTME: Untested
+    async def current_user(self, email: Annotated[str, Depends(verify_idtoken)]) -> Type[U]:
+        """
+        Dependency for getting the user by their verified idtoken.
+        :param email:   Email taken from the idtoken
+        :return:        User
+        :raises UserNotFoundError:
+        """
+        return await self._current_user(email)
+
+    # TESTME: Untested
+    async def _current_user(self, email: str) -> Type[U]:
+        """
+        Get user by email for use in dependencies.
+        :param email:   Email taken from the idtoken
+        :return:        User
+        :raises UserNotFoundError:
+        """
+        try:
+            async with AsyncSession(self.engine) as session:
+                user = await self.User.get_by_email(session, email)
+                return user
+        except Exception as _:
+            raise UserNotFoundError()
+
+    # TODO: Dependency verify_device for app_check
+    # def verify_device(tago_appcheck: Annotated[str, Header()], tago_token: Annotated[str, Header()]) -> dict:
+    #     """
+    #     Verify AppCheck and FirebaseAuth tokens. Both must pass to continue.
+    #     :param tago_appcheck:   App AppCheck jwt
+    #     :param tago_token:      User idtoken jwt
+    #     :return:                Verified tago_token
+    #     """
+    #     try:
+    #         appcheck_data = app_check.verify_token(tago_appcheck)
+    #     except Exception as err:
+    #         raise InvalidToken('INVALID_DEVICE_TOKEN')
+    #
+    #     try:
+    #         token_data = auth.verify_id_token(tago_token)
+    #         # if token_data['aud'] != s.PROJECT_ID:
+    #         #     raise Exception()
+    #         return token_data
+    #     except auth.RevokedIdTokenError as err:
+    #         # logger.critical(err)
+    #         raise InvalidToken('TOKEN_REVOKED')
+    #     except Exception as err:
+    #         # logger.critical(err)
+    #         raise InvalidToken()
+
+
+class Fastbase(FastbaseDependency):
     _instance = None
     _lock = threading.Lock()
     engine: AsyncEngine
@@ -51,67 +123,6 @@ class Fastbase:
         self.User = user_model
         self.user_defaults = user_defaults or {}
         self.post_create = post_create
-
-
-    # TESTME: Untested
-    @staticmethod
-    def verify_idtoken(authorization: Annotated[str, Header()]) -> str:
-        """
-        Dependency to verify if an idtoken is valid.
-        :param authorization:   Google idtoken
-        :return:                Token data
-        :raises InvalidToken:
-        """
-        # TESTME: Untested
-        try:
-            token = authorization.split(' ')[1]
-            token_data = auth.verify_id_token(token)
-            return token_data.pop('email')
-        except Exception:
-            raise InvalidToken()
-
-
-    # TESTME: Untested
-    async def current_user(self, email: Annotated[str, Depends(verify_idtoken)]) -> Type[UserMod]:
-        """
-        Dependency that returns a saved User entry from either redis or db.
-        :param email:   Email taken from the idtoken
-        :return:        User
-        :raises UserNotFoundError:
-        """
-        # TESTME: Untested
-        try:
-            async with AsyncSession(self.engine) as session:
-                user = await self.User.get_by_email(session, email)
-                return user
-        except Exception as e:
-            raise UserNotFoundError()
-
-
-    # TODO: Dependency verify_device for app_check
-    # def verify_device(tago_appcheck: Annotated[str, Header()], tago_token: Annotated[str, Header()]) -> dict:
-    #     """
-    #     Verify AppCheck and FirebaseAuth tokens. Both must pass to continue.
-    #     :param tago_appcheck:   App AppCheck jwt
-    #     :param tago_token:      User idtoken jwt
-    #     :return:                Verified tago_token
-    #     """
-    #     try:
-    #         appcheck_data = app_check.verify_token(tago_appcheck)
-    #     except Exception as err:
-    #         raise InvalidToken('INVALID_DEVICE_TOKEN')
-    #
-    #     try:
-    #         token_data = auth.verify_id_token(tago_token)
-    #         # if token_data['aud'] != s.PROJECT_ID:
-    #         #     raise Exception()
-    #         return token_data
-    #     except auth.RevokedIdTokenError as err:
-    #         # logger.critical(err)
-    #         raise InvalidToken('TOKEN_REVOKED')
-    #     except Exception as err:
-    #         # logger.critical(err)
-    #         raise InvalidToken()
 
 
     # TESTME: Untested
