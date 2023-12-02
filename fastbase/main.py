@@ -142,7 +142,7 @@ class Fastbase(FastbaseDependency):
 
                     if not exists:
                         display, *_ = email.partition('@')
-                        user = self.User(email=email, username=email, display=display, **self.user_defaults)
+                        user = self.User(email=email, display=display, **self.user_defaults)
                         ic(user)
                         session.add(user)
                         await session.commit()

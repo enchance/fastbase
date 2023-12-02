@@ -10,33 +10,33 @@ from datetime import date
 from pydantic import EmailStr
 from icecream import ic
 
-from .mixins import DTMixin, UuidPK
+from .mixins import DTMixin, UuidPK, UpdatedAtMixin
 from ..utils import modstr
 
 
-USER_TABLE = 'auth_user'
-USER_PK = f'{USER_TABLE}.id'
-author_fk = Field(foreign_key=USER_PK)
-author_fk_nullable = Field(foreign_key=USER_PK, nullable=True)
 
-
-class UserMod(DTMixin, UuidPK, SQLModel):
-    __tablename__ = USER_TABLE
-    username: str = Field(max_length=190, unique=True)
-    email: str = Field(max_length=190, unique=True)
-    display: str = Field(max_length=199)
-    role: str = Field(max_length=20, default='user')
-    groups: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
-    permissions: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
+class ProfileMod(UpdatedAtMixin, SQLModel):
     gender: str | None = Field(max_length=20, nullable=True)
-    timezone: str | None = Field(max_length=190, default='+0000')
-    is_verified: bool = Field(default=True)
-    is_active: bool = Field(default=True)
-    is_banned: bool = Field(default=False)
+    birthday: date | None = Field(nullable=True)
     meta: dict = Field(sa_column=Column(JSON), default={})
 
     def __repr__(self):
-        return modstr(self, 'username', 'email')
+        return modstr(self)
+
+
+class UserMod(DTMixin, UuidPK, SQLModel):
+    email: str = Field(max_length=190, unique=True)
+    display: str = Field(max_length=199)
+    timezone: str | None = Field(max_length=190, default='+0000')
+    role: str = Field(max_length=20, default='user')
+    groups: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
+    permissions: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
+    is_verified: bool = Field(default=True)
+    is_active: bool = Field(default=True)
+    is_banned: bool = Field(default=False)
+
+    def __repr__(self):
+        return modstr(self, 'email')
 
     # TESTME: Untested
     @classmethod
@@ -75,10 +75,10 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if _ := execdata.first():
             return True
 
-    # TODO: Placeholder
+    # PLACEHOLDER: To follow
     async def has(self, action: str) -> bool:
         pass
 
-    # TODO: Placeholder
+    # PLACEHOLDER: To follow
     async def has_group(self, name: str) -> bool:
         pass
