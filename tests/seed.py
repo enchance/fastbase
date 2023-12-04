@@ -3,7 +3,6 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from fastbase.models import Group, Role
 
 from .data import *
-from .testapp import *
 
 
 
