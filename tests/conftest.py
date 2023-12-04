@@ -1,14 +1,11 @@
-import os, pytest, asyncio, httpx, pytest_asyncio
+import pytest, asyncio, httpx, pytest_asyncio
 from typing import Generator
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from .app.main import app
-# from main import app
-# from core import settings as s, ic
-# from core.db import silent_engine
-# from fixtures import seed_groups, seed_roles, seed_accounts
+from .testapp.main import app, silent_engine
+from .seed import seed_groups, seed_roles
 
 
 
@@ -49,4 +46,4 @@ async def session() -> AsyncSession:
 async def seed(session: AsyncSession):
     await seed_groups(session)
     await seed_roles(session)
-    await seed_accounts(session)
+    # await seed_accounts(session)

@@ -9,4 +9,5 @@ from decouple import config
 DATABASE_URL = config('DATABASE_URL')
 silent_engine = create_async_engine(DATABASE_URL)
 
+
 app = FastAPI(docs_url=None, redoc_url=None, swagger_ui_oauth2_redirect_url=None)

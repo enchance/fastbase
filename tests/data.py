@@ -1,5 +1,5 @@
 from fastbase.schemas import GroupEnum
-from core import settings as s
+
 
 crud = {'create', 'read', 'update', 'delete'}
 read = {'read'}
