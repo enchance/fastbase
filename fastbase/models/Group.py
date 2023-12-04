@@ -1,5 +1,5 @@
 from typing import Self
-from sqlmodel import SQLModel, Field, String
+from sqlmodel import SQLModel, Field, String, select
 from sqlalchemy import Column
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -33,7 +33,7 @@ class Group(IntPK, SQLModel, table=True):
         except IntegrityError:
             raise
 
-    async def append(self, session: AsyncSession, permissions: set[str]):
+    async def add_all(self, session: AsyncSession, permissions: set[str]):
         """Append new permissions to group. Requires group.update permission."""
         self.permissions = {*self.permissions, *permissions}                # noqa
         session.add(self)
@@ -50,3 +50,16 @@ class Group(IntPK, SQLModel, table=True):
         self.description = description
         session.add(self)
         await session.commit()
+
+
+    # TESTME: Untested
+    @classmethod
+    async def collate(cls, session: AsyncSession, nameset: set[str]) -> set[str]:
+        stmt = select(cls.permissions).where(cls.name.in_(nameset))
+        edata = await session.exec(stmt)
+        alldata = edata.all()
+
+        ss = set()
+        for i in alldata:
+            ss.update(i)
+        return ss
