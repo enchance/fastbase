@@ -19,10 +19,10 @@ class Group(IntPK, SQLModel, table=True):
     def __repr__(self):
         return modstr(self, 'name')
 
-    # TESTME: Untested
     @classmethod
-    async def create(cls, session: AsyncSession, *, name: str,  permissions: set,
-                     description: str | None = None) ->Self:
+    async def create(cls, session: AsyncSession, *,
+                     name: str,  permissions: set | None = None,
+                     description: str | None = None) -> Self:
         """Create a new group. Requires group.create permission."""
         try:
             group = cls(name=name, permissions=permissions, description=description)
@@ -33,32 +33,20 @@ class Group(IntPK, SQLModel, table=True):
         except IntegrityError:
             raise
 
-    # TESTME: Untested
-    @classmethod
-    async def append(cls, session: AsyncSession, id: int, permissions: set) -> Self:
+    async def append(self, session: AsyncSession, permissions: set[str]):
         """Append new permissions to group. Requires group.update permission."""
-        if group := await session.get(cls, id):
-            group.permissions = {*group.permissions, *permissions}
-            session.add(group)
-            await session.commit()
-        return group
+        self.permissions = {*self.permissions, *permissions}                # noqa
+        session.add(self)
+        await session.commit()
 
-    # TESTME: Untested
-    @classmethod
-    async def reset(cls, session: AsyncSession, id: int, permissions: set = None) -> Self:
+    async def reset(self, session: AsyncSession, permissions: set[str] | None = None):
         """Reset permissions. Requires group.reset permission."""
-        if group := await session.get(cls, id):
-            group.permissions = permissions or {i for i in GroupEnum}
-            session.add(group)
-            await session.commit()
-        return group
+        self.permissions = permissions or []
+        session.add(self)
+        await session.commit()
 
-    # TESTME: Untested
-    @classmethod
-    async def describe(cls, session: AsyncSession, id: int, description: str) -> Self:
+    async def describe(self, session: AsyncSession, description: str):
         """Change group description. Requires group.update permission."""
-        if group := await session.get(cls, id):
-            group.description = description
-            session.add(group)
-            await session.commit()
-        return group
+        self.description = description
+        session.add(self)
+        await session.commit()
