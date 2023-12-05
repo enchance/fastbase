@@ -14,6 +14,5 @@ class UserBaseSchema(BaseModel):
     id: UUID
     email: str
     display: str
-    username: str
     timezone: str
     created_at: datetime

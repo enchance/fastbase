@@ -1,6 +1,6 @@
 import threading
 from typing import Type, Annotated, Self, Callable, Awaitable, TypeVar
-from fastapi import APIRouter, Header, Depends, Body
+from fastapi import APIRouter, Header, Depends
 from firebase_admin import auth
 from pydantic import EmailStr
 from icecream import ic
@@ -130,7 +130,12 @@ class Fastbase(FastbaseDependency):
         router = APIRouter()
 
         @router.post('/signin', response_model=user_schema)
-        async def signin(token: Annotated[str, Body()]) -> Type[Self]:
+        async def signin(authorization: Annotated[str, Header()]) -> Type[Self]:
+            token = authorization.split(' ')[1]
+
+            if not token:
+                raise InvalidToken('Your token is bad and you should feel bad')
+
             try:
                 token_data = auth.verify_id_token(token)
             except Exception:
@@ -138,7 +143,7 @@ class Fastbase(FastbaseDependency):
 
             if email := token_data.get('email'):
                 async with AsyncSession(self.engine) as session:
-                    exists = await self.User.exists(session, EmailStr(email))
+                    exists = await self.User.exists(session, EmailStr(email))   # noqa
 
                     if not exists:
                         display, *_ = email.partition('@')
