@@ -12,7 +12,7 @@ from redis import Redis
 
 from .models import *
 from .schemas import *
-from .exceptions import InvalidToken, UserNotFoundError
+from .exceptions import InvalidToken, UserNotFoundError, CallbackError
 from .globals import ic
 
 
@@ -99,8 +99,6 @@ class Fastbase(FastbaseDependency):
     User: Type[UserMod]
     user_schema: Type[UserBaseSchema]
     user_defaults: dict
-    # Group = Gr
-    # Role = Rl
     post_create: Callable[[AsyncSession, UserMod], Awaitable[None]]
 
 
@@ -117,7 +115,7 @@ class Fastbase(FastbaseDependency):
                    redis: Redis | None = None,
                    user_model: Type[UserMod],
                    user_defaults: dict | None = None,
-                   post_create: Callable[[AsyncSession, U], Awaitable[None]] = None):
+                   post_create: Callable[[AsyncSession, U], Awaitable[None]] | None = None):
         self.engine = engine
         self.redis = redis
         self.User = user_model
@@ -142,12 +140,16 @@ class Fastbase(FastbaseDependency):
 
                     if not exists:
                         display, *_ = email.partition('@')
-                        user = self.User(email=email, display=display, **self.user_defaults)
-                        ic(user)
+                        user = self.User(email=email, display=display, username=email, **self.user_defaults)
                         session.add(user)
                         await session.commit()
                         await session.refresh(user)
-                        self.post_create and await self.post_create(session, user)
+
+                        if self.post_create:
+                            try:
+                                await self.post_create(session, user)
+                            except Exception:
+                                raise CallbackError()
                     else:
                         user = await self.User.get_by_email(session, email)
                     return user

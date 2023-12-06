@@ -1,6 +1,7 @@
 from uuid import UUID
+from datetime import datetime
 from typing import Type, Self
-from sqlalchemy import Column
+from sqlalchemy import Column, DateTime
 from sqlmodel import SQLModel, Field, String, JSON, Relationship, select, exists
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -26,14 +27,17 @@ class ProfileMod(UpdatedAtMixin, SQLModel):
 
 class UserMod(DTMixin, UuidPK, SQLModel):
     email: str = Field(max_length=190, unique=True)
+    username: str = Field(max_length=190, unique=True)
     display: str = Field(max_length=199)
     timezone: str | None = Field(max_length=190, default='+0000')
     role: str = Field(max_length=20, default='user')
     groups: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
     permissions: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
+    # TODO: Optional verification
     is_verified: bool = Field(default=True)
+    # TODO: Optional activation
     is_active: bool = Field(default=True)
-    is_banned: bool = Field(default=False)
+    banned_at: datetime | None = Field(sa_column=Column(DateTime(timezone=True), nullable=True))
 
     def __repr__(self):
         return modstr(self, 'email')

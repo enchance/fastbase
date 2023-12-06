@@ -31,3 +31,11 @@ class AuthError(AppException):
 class UserNotFoundError(AppException):
     code = 404
     message = 'USER_NOT_FOUND'
+
+
+class CallbackError(Exception):
+    def __init__(self, message: str = '', *, name: str = ''):
+        message = message or 'CALLBACK_FAILED'
+        if name:
+            message += f' {name}'
+        raise Exception(message)
