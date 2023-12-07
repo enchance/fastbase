@@ -8,6 +8,8 @@ from enum import StrEnum, auto
 class GroupEnum(StrEnum):
     AdminGroup = 'AdminGroup'
     AccountGroup = 'AccountGroup'
+    MessageGroup = 'MessageGroup'
+    UploadGroup = 'UploadGroup'
 
 
 class UserBaseSchema(BaseModel):

@@ -78,11 +78,3 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         execdata = await session.exec(stmt)
         if _ := execdata.first():
             return True
-
-    # PLACEHOLDER: To follow
-    async def has(self, action: str) -> bool:
-        pass
-
-    # PLACEHOLDER: To follow
-    async def has_group(self, name: str) -> bool:
-        pass
