@@ -97,12 +97,12 @@ class Fastbase(FastbaseDependency):
     engine: AsyncEngine
     redis: Redis | None
     User: Type[UserMod]
-    user_schema: Type[UserBaseSchema]
     user_defaults: dict
     post_create: Callable[[AsyncSession, UserMod], Awaitable[None]]
 
 
     def __new__(cls):
+        """Singleton pattern"""
         if cls._instance is None:
             with cls._lock:
                 if not cls._instance:
@@ -116,6 +116,7 @@ class Fastbase(FastbaseDependency):
                    user_model: Type[UserMod],
                    user_defaults: dict | None = None,
                    post_create: Callable[[AsyncSession, U], Awaitable[None]] | None = None):
+        """Use instead of __init__ since it uses the singleton pattern."""
         self.engine = engine
         self.redis = redis
         self.User = user_model
@@ -125,6 +126,11 @@ class Fastbase(FastbaseDependency):
 
     # TESTME: Untested
     def get_signin_router(self, user_schema: Type[UserBaseSchema] = UserBaseSchema):
+        """
+        Router for when user signs in. An account is created in the db if the user doesn't exist.
+        :param user_schema: Response model
+        :return:
+        """
         router = APIRouter()
 
         @router.post('/signin', response_model=user_schema)
