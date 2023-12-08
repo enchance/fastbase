@@ -18,3 +18,5 @@ class UserBaseSchema(BaseModel):
     display: str
     timezone: str
     created_at: datetime
+    banned_at: bool | None = None
+    role: str
