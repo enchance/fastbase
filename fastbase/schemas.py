@@ -10,6 +10,7 @@ class GroupEnum(StrEnum):
     AccountGroup = 'AccountGroup'
     MessageGroup = 'MessageGroup'
     UploadGroup = 'UploadGroup'
+    EmptyGroup = 'EmptyGroup'
 
 
 class UserBaseSchema(BaseModel):
