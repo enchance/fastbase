@@ -11,12 +11,12 @@ from datetime import date
 from pydantic import EmailStr
 from icecream import ic
 
-from .mixins import DTMixin, UuidPK, UpdatedAtMixin
+from .mixins import DTMixin, UuidPK, UpdatedAtMixin, IntPK
 from ..utils import modstr
 
 
 
-class ProfileMod(UpdatedAtMixin, SQLModel):
+class ProfileMod(IntPK, UpdatedAtMixin, SQLModel):
     gender: str | None = Field(max_length=20, nullable=True)
     birthday: date | None = Field(nullable=True)
     meta: dict = Field(sa_column=Column(JSON), default={})
