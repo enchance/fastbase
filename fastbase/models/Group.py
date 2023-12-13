@@ -33,6 +33,12 @@ class Group(IntPK, SQLModel, table=True):
         except IntegrityError:
             raise
 
+    # PLACEHOLDER: To follow
+    @classmethod
+    async def delete(cls, name: str):
+        """Delete a group. Updates cache."""
+        pass
+
     async def add_all(self, session: AsyncSession, permissions: set[str]):
         """Append new permissions to group. Requires group.update permission."""
         self.permissions = {*self.permissions, *permissions}                # noqa
