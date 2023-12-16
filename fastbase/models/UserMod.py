@@ -85,10 +85,11 @@ class UserMod(DTMixin, UuidPK, SQLModel):
                            callback: Callable[[str, list], Awaitable[None]] | None = None):
         """
         Add group to user. Removes duplicates.
-        :param session: AsyncSession
-        :param name:    Group name
-        :param caching: Callback function for caching data
-        :return:        None
+        :param session:     AsyncSession
+        :param name:        Group name
+        :param caching:     Callback for caching data
+        :param callback:    Async callback for generic use
+        :return:            None
         """
         # async with AsyncSession(async_engine) as sess: # noqa
         # async with asynccontextmanager(get_session)() as sess: # noqa
@@ -99,3 +100,5 @@ class UserMod(DTMixin, UuidPK, SQLModel):
 
             if caching:
                 caching(self.email, self.groups)
+            if callback:
+                callback(self.email, self.groups)
