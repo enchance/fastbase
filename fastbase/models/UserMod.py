@@ -1,6 +1,6 @@
 from uuid import UUID
 from datetime import datetime
-from typing import Type, Self
+from typing import Type, Self, Callable, Awaitable
 from sqlalchemy import Column, DateTime
 from sqlmodel import SQLModel, Field, String, JSON, Relationship, select, exists
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -13,6 +13,7 @@ from icecream import ic
 
 from .mixins import DTMixin, UuidPK, UpdatedAtMixin, IntPK
 from ..utils import modstr
+from ..exceptions import CallbackError
 
 
 
@@ -78,3 +79,23 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         execdata = await session.exec(stmt)
         if _ := execdata.first():
             return True
+
+    async def attach_group(self, session: AsyncSession, name: str,
+                           *, caching: Callable[[str, list], None] | None = None,
+                           callback: Callable[[str, list], Awaitable[None]] | None = None):
+        """
+        Add group to user. Removes duplicates.
+        :param session: AsyncSession
+        :param name:    Group name
+        :param caching: Callback function for caching data
+        :return:        None
+        """
+        # async with AsyncSession(async_engine) as sess: # noqa
+        # async with asynccontextmanager(get_session)() as sess: # noqa
+        #     user = await User.get_by_email(sess, 'admin@gmail.com', skip_cache=True)
+        if name not in self.groups:
+            self.groups = list({*self.groups, name})
+            await session.commit()
+
+            if caching:
+                caching(self.email, self.groups)

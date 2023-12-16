@@ -57,7 +57,6 @@ class Group(IntPK, SQLModel, table=True):
         session.add(self)
         await session.commit()
 
-
     # TESTME: Untested
     @classmethod
     async def collate(cls, session: AsyncSession, nameset: set[str]) -> set[str]:
