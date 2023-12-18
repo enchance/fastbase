@@ -51,10 +51,9 @@ class Group(IntPK, UpdatedAtMixin, SQLModel, table=True):
         session.add(self)
         await session.commit()
 
-    async def describe(self, session: AsyncSession, description: str):
+    async def describe(self, session: AsyncSession, description: str | None = None):
         """Change group description. Requires group.update permission."""
-        self.description = description
-        session.add(self)
+        self.description = description or ''
         await session.commit()
 
     # TESTME: Untested
