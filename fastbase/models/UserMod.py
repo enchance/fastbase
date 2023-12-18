@@ -31,14 +31,14 @@ class UserMod(DTMixin, UuidPK, SQLModel):
     username: str = Field(max_length=190, unique=True)
     display: str = Field(max_length=199)
     timezone: str | None = Field(max_length=190, default='+0000')
+
     role: str = Field(max_length=20, default='user')
     groups: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
     permissions: list[str] = Field(sa_column=Column(ARRAY(String)), default=[])
-    # TODO: Optional verification
-    is_verified: bool = Field(default=True)
-    # TODO: Optional activation
-    is_active: bool = Field(default=True)
-    banned_at: datetime | None = Field(sa_column=Column(DateTime(timezone=True), nullable=True))
+
+    is_verified: bool = Field(default=True)                     # TODO: Optional verification
+    is_active: bool = Field(default=True)                       # TODO: Optional activation
+    banned_at: datetime | None = Field(sa_column=Column(DateTime(timezone=True), nullable=True, index=True))
 
     def __repr__(self):
         return modstr(self, 'email')

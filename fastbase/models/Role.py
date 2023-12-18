@@ -5,11 +5,11 @@ from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.exc import IntegrityError
 
-from .mixins import IntPK
+from .mixins import IntPK, UpdatedAtMixin
 from ..utils import modstr
 
 
-class Role(IntPK, SQLModel, table=True):
+class Role(IntPK, UpdatedAtMixin, SQLModel, table=True):
     __tablename__ = 'auth_role'
     name: str = Field(max_length=20, unique=True)
     description: str | None = Field(max_length=199, default='')

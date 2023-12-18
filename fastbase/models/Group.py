@@ -5,12 +5,12 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.exc import IntegrityError
 
-from .mixins import IntPK
+from .mixins import IntPK, UpdatedAtMixin
 from ..utils import modstr
 from ..schemas import *
 
 
-class Group(IntPK, SQLModel, table=True):
+class Group(IntPK, UpdatedAtMixin, SQLModel, table=True):
     __tablename__ = 'auth_group'
     name: str = Field(max_length=20, unique=True)
     description: str = Field(max_length=199, default='')

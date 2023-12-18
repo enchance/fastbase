@@ -19,7 +19,7 @@ class TaxonomyMod(IntPK, SQLModel):
         return modstr(self, 'name')
 
 
-class OptionMod(UpdatedAtMixin, IntPK, SQLModel):
+class OptionMod(IntPK, UpdatedAtMixin, SQLModel):
     key: str = Field(max_length=20, primary_key=True)
     val: str = Field(max_length=199, nullable=True)
 
