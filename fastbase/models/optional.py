@@ -22,7 +22,7 @@ class TaxonomyMod(IntPK, SQLModel):
 
 class OptionMod(IntPK, UpdatedAtMixin, SQLModel):
     key: str = Field(max_length=199)
-    val: str = Field(max_length=255, nullable=True)
+    value: str = Field(max_length=255, nullable=True)
 
     # # Demo compound unique fields
     # xxx: str = Field(max_length=199)
