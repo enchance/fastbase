@@ -10,9 +10,10 @@ from ..utils import modstr
 
 class TaxonomyMod(IntPK, SQLModel):
     name: str = Field(max_length=199)
-    type: str = Field(max_length=20)
+    slug: str = Field(max_length=199)
+    type: str = Field(max_length=50)
     sort: int | None = Field(default=1000)
-    is_private: bool | None = Field(default=False)
+    is_private: bool | None = Field(default=True)
     is_active: bool | None = Field(default=True)
 
     def __repr__(self):
@@ -20,8 +21,8 @@ class TaxonomyMod(IntPK, SQLModel):
 
 
 class OptionMod(IntPK, UpdatedAtMixin, SQLModel):
-    key: str = Field(max_length=20, primary_key=True)
-    val: str = Field(max_length=199, nullable=True)
+    key: str = Field(max_length=199)
+    val: str = Field(max_length=255, nullable=True)
 
     # # Demo compound unique fields
     # xxx: str = Field(max_length=199)
@@ -29,4 +30,4 @@ class OptionMod(IntPK, UpdatedAtMixin, SQLModel):
     # __table_args__ = (UniqueConstraint('xxx', 'yyy'),)
 
     def __repr__(self):
-        return modstr(self, 'key')
+        return modstr(self, 'key', 'val')
