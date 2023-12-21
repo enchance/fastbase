@@ -21,6 +21,9 @@ U = TypeVar('U', bound=UserMod)
 
 
 class FastbaseDependency:
+    """
+    This does something.
+    """
     engine: AsyncEngine
     User: Type[UserMod]
 
