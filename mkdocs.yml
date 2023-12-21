@@ -1,0 +1,25 @@
+site_name: My Docs
+repo_name: enchance/fastbase
+repo_url: https://github.com/enchance/fastbase
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.footer
+extra_css:
+  - assets/styles.css
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            heading_level: 3
+            show_root_toc_entry: false
+            show_category_heading: true
+            docstring_style: sphinx
+            docstring_section_style: spacy
+            show_if_no_docstring: true
+
+nav:
+  - Overview: index.md
