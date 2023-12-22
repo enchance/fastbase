@@ -1,3 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://enchance.github.io/fastbase/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://enchance.github.io/fastbase/class/fastbase-dependency/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://enchance.github.io/fastbase/class/fastbase/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://enchance.github.io/fastbase/models/group/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://enchance.github.io/fastbase/models/role/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://enchance.github.io/fastbase/models/usermod/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
 </urlset>
