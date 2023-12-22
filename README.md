@@ -6,6 +6,8 @@ back again for updates.**
 
 Role-based Access Contral (RBAC) via Firebase `idtoken` authententication using FastAPI and SQLModel.
 
+Documentation: https://enchance.github.io/fastbase/class/fastbase/
+
 
 Installation
 -----------
