@@ -46,7 +46,7 @@ python-decouple = "^3.8"
 alembic = "^1.13.0"
 faker = "^21.0.0"
 mkdocs = "^1.5.3"
-mkdocs-material = "^9.5.2"
+mkdocs-material = {extras = ["imaging"], version = "^9.5.2"}
 mkdocstrings = "^0.24.0"
 mkdocstrings-python = "^1.7.5"
 

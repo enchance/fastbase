@@ -1,4 +1,6 @@
-site_name: My Docs
+site_name: Fastbase
+site_description: Fastbase python package
+site_url: https://enchance.github.io/fastbase
 repo_name: enchance/fastbase
 repo_url: https://github.com/enchance/fastbase
 theme:
@@ -9,10 +11,9 @@ theme:
     - navigation.footer
     - content.code.copy
     - navigation.top
-extra_css:
-  - assets/styles.css
 plugins:
   - search
+  - social
   - mkdocstrings:
       handlers:
         python:
@@ -33,7 +34,13 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
-
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/enchance/fastbase
+extra_css:
+  - assets/styles.css
+copyright: Copyright 2023 <a href="https://github.com/enchance"  target="_blank" rel="noopener">Enchance</a>
 nav:
   - Usage: index.md
   - Class Reference:
