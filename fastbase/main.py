@@ -28,10 +28,22 @@ class FastbaseDependency:
     @staticmethod
     def verify_idtoken(authorization: Annotated[str, Header()]) -> str:
         """
-        Dependency to verify if an idtoken is valid.
-        :param authorization:   Google idtoken
-        :return:                Token data
-        :raises InvalidToken:
+        Dependency to verify if a Google **idtoken** is valid. Out of the decrypted data only the email is returned.
+
+        !!! tip "Use with"
+            Use with the `current_user` dependency which gets the User based on the email.
+
+        ??? example
+
+            ```python
+            @app.get('/', email: Annotated[str, Depends(verify_idtoken)]):
+                # Header:  Authorization=Bearer abc123...
+                ...
+            ```
+
+        :param authorization:   Bearer token taken taken from Google idtoken
+        :return:                Decrypted token data
+        :raises InvalidToken:   Token cannot be used e.g. it's expired, malformed, etc.
         """
         try:
             token = authorization.split(' ')[1]
@@ -44,9 +56,21 @@ class FastbaseDependency:
     async def current_user(self, email: Annotated[str, Depends(verify_idtoken)]) -> Type[U]:
         """
         Dependency for getting the user by their verified idtoken.
-        :param email:   Email taken from the idtoken
-        :return:        User
-        :raises UserNotFoundError:
+
+        !!! tip "Use with"
+            Use with the `verify_idtoken` dependency which gets the User based on the email.
+
+        ??? example
+
+            ```python
+            @app.get('/', user: Annotated[User, Depends(current_user)]):
+                ...
+            ```
+
+
+        :param email:   Email taken from the bearer token
+        :return:        Valid user
+        :raises UserNotFoundError:  The user who owns the email doesn't exist
         """
         return await self._current_user(email)
 
