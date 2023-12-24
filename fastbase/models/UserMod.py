@@ -10,6 +10,7 @@ from sqlalchemy.exc import NoResultFound
 from datetime import date
 from pydantic import EmailStr
 from icecream import ic
+from fastbase.exceptions import PermissionsException
 
 from .mixins import DTMixin, UuidPK, UpdatedAtMixin, IntPK
 from ..utils import modstr
@@ -79,54 +80,3 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         execdata = await session.exec(stmt)
         if _ := execdata.first():
             return True
-
-    # TESTME: Untested
-    async def attach_group(self, session: AsyncSession, name: str,
-                           *, caching: Callable[[str, list], None] | None = None,
-                           async_callback: Callable[[str, list], Awaitable[None]] | None = None, ):
-        """
-        Add group to user. Removes duplicates.
-        :param session:     AsyncSession
-        :param name:        Group name
-        :param caching:     Callback for caching data
-        :param async_callback:    Async callback for generic use
-        :return:            None
-        """
-        # async with AsyncSession(async_engine) as sess: # noqa
-        # async with asynccontextmanager(get_session)() as sess: # noqa
-        #     user = await User.get_by_email(sess, 'admin@gmail.com', skip_cache=True)
-        if name not in self.groups:
-            groups = list({*self.groups, name})
-            self.groups = groups
-            await session.commit()
-
-            if caching:
-                caching(self.email, groups)
-            if async_callback:
-                await async_callback(self.email, groups)
-
-            return groups
-
-    # TESTME: Untested
-    async def detach_group(self, session: AsyncSession, name: str,
-                           *, caching: Callable[[str, list], None] | None = None,
-                           async_callback: Callable[[str, list], Awaitable[None]] | None = None) -> set[str]:
-        """
-        Remove group from user.
-        :param session:     AsyncSession
-        :param name:        Group name
-        :param caching:     Callback for caching data
-        :param async_callback:    Async callback for generic use
-        :return:            None
-        """
-        if name in self.groups:
-            groups = set(self.groups)
-            groups.discard(name)
-            self.groups = list(groups)
-            await session.commit()
-
-            if caching:
-                caching(self.email, list(groups))
-            if async_callback:
-                await async_callback(self.email, list(groups))
-            return groups
