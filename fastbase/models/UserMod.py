@@ -140,18 +140,20 @@ class UserMod(DTMixin, UuidPK, SQLModel):
             neg_ = f'-{name_}'
             groups_ = set(recipient.groups)
 
-            if neg_ not in groups_:
-                groups_.add(name_)
-            elif name_ in groups_:
+            if name_ in groups_:
                 groups_.remove(name_)
+            else:
+                groups_.add(neg_)
             return list(groups_)
 
         if not await self.has('group.detach'):
             raise PermissionsException()
 
+        # ic(recipient.groups)
         groups = _detach(name)
         recipient.groups = groups
         await session.commit()
+        # ic(recipient.groups)
 
         if caching:
             caching(recipient.email, list(groups))
