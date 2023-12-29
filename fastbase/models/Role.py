@@ -1,5 +1,5 @@
 from typing import Self
-from sqlmodel import SQLModel, Field, String
+from sqlmodel import SQLModel, Field, String, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -50,3 +50,13 @@ class Role(IntPK, UpdatedAtMixin, SQLModel, table=True):
             session.add(role)
             await session.commit()
         return role
+
+
+class RoleService:
+    @classmethod
+    async def fetch_group_names(cls, session: AsyncSession, role: str) -> set[str]:
+        stmt = select(Role.groups).where(Role.name == role)
+        execdata = await session.exec(stmt)
+        ll = execdata.one()
+        return set(ll)
+

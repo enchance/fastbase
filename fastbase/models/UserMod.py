@@ -13,6 +13,7 @@ from icecream import ic
 from fastbase.exceptions import PermissionsException
 
 from .mixins import DTMixin, UuidPK, UpdatedAtMixin, IntPK
+from .Role import Role
 from ..utils import modstr
 from ..exceptions import CallbackError
 
@@ -81,13 +82,13 @@ class UserMod(DTMixin, UuidPK, SQLModel):
             return True
 
     async def has(self, data: str) -> bool:
-        ...
+        raise NotImplementedError()
 
     async def attach_group(self, session: AsyncSession, recipient: Self, name: str,
                            *, caching: Callable[[str, list], None] | None = None,
-                           async_callback: Callable[[str, list], Awaitable[None]] | None = None, ):
+                           async_callback: Callable[[str, list], Awaitable[None]] | None = None):
         """
-        Add group to user. Removes duplicates.
+        Attach a group to user. Prevents duplicates.
         :param session:     AsyncSession
         :param recipient:   The user to recieve the group
         :param name:        Group name
@@ -121,13 +122,11 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if async_callback:
             await async_callback(recipient.email, groups)
 
-    # TESTME: Untested
-    # BUG:  Not functional at all. Still not test worthy.
     async def detach_group(self, session: AsyncSession, recipient: Self, name: str,
                            *, caching: Callable[[str, list], None] | None = None,
-                           async_callback: Callable[[str, list], Awaitable[None]] | None = None, ):
+                           async_callback: Callable[[str, list], Awaitable[None]] | None = None):
         """
-        Remove group from a user.
+        Remove a group from user. If the group is a starter group (can't be removed) then a negation is added.
         :param session:     AsyncSession
         :param recipient:   The user who's group is to be removed
         :param name:        Group name
@@ -149,15 +148,89 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('group.detach'):
             raise PermissionsException()
 
-        # ic(recipient.groups)
         groups = _detach(name)
         recipient.groups = groups
         await session.commit()
-        # ic(recipient.groups)
 
         if caching:
             caching(recipient.email, list(groups))
         if async_callback:
             await async_callback(recipient.email, list(groups))
-        return groups
+
+    # # TESTME: Untested
+    # async def attach_permission(self, session: AsyncSession, recipient: Self, perm: str,
+    #                             *, caching: Callable[[str, list], None] | None = None,
+    #                             async_callback: Callable[[str, list], Awaitable[None]] | None = None):
+    #     """
+    #     Attach a permission to user. Prevents duplicates.
+    #     :param session:     AsyncSession
+    #     :param recipient:   The user to recieve the group
+    #     :param perm:        Permission name
+    #     :param caching:     Callback for caching data
+    #     :param async_callback:    Async callback for generic use
+    #     :raises PermissionsException:
+    #     :return:            None
+    #     """
+    #     def _attach(perm_: str) -> list[str]:
+    #         neg_ = f'-{perm_}'
+    #         permissions_ = set(recipient.permissions)
+    #
+    #         ic(permissions_)
+    #         if neg_ in permissions_:
+    #             permissions_.remove(neg_)
+    #         elif perm_ not in permissions_:
+    #             permissions_.add(perm_)
+    #         ic(permissions_)
+    #         return list(permissions_)
+    #
+    #     if not await self.has('permission.attach'):
+    #         raise PermissionsException()
+    #
+    #     # ic(recipient.permissions)
+    #     permissions = _attach(perm)
+    #     recipient.permissions = permissions
+    #     await session.commit()
+    #     # ic(recipient.permissions)
+    #
+    #     if caching:
+    #         caching(recipient.email, permissions)
+    #     if async_callback:
+    #         await async_callback(recipient.email, permissions)
+    #
+    # # TESTME: Untested
+    # async def detach_permission(self, session: AsyncSession, recipient: Self, perm: str,
+    #                             *, caching: Callable[[str, list], None] | None = None,
+    #                             async_callback: Callable[[str, list], Awaitable[None]] | None = None):
+    #     """
+    #     Remove a permission from user. If the perm is a starter perm (can't be removed) then a negation is added.
+    #     :param session:     AsyncSession
+    #     :param recipient:   The user who's group is to be removed
+    #     :param perm:        Permission name
+    #     :param caching:     Callback for caching data
+    #     :param async_callback:    Async callback for generic use
+    #     :raises PermissionsException:
+    #     :return:            None
+    #     """
+    #     def _detach(name_: str) -> list[str]:
+    #         neg_ = f'-{name_}'
+    #         groups_ = set(recipient.groups)
+    #
+    #         if name_ in groups_:
+    #             groups_.remove(name_)
+    #         else:
+    #             groups_.add(neg_)
+    #         return list(groups_)
+    #
+    #     if not await self.has('permission.detach'):
+    #         raise PermissionsException()
+    #
+    #     groups = _detach(perm)
+    #     recipient.groups = groups
+    #     await session.commit()
+    #
+    #     if caching:
+    #         caching(recipient.email, list(groups))
+    #     if async_callback:
+    #         await async_callback(recipient.email, list(groups))
+
 
