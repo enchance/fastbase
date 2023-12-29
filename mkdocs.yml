@@ -1,0 +1,52 @@
+site_name: Fastbase
+site_description: Fastbase python package
+site_url: https://enchance.github.io/fastbase
+repo_name: enchance/fastbase
+repo_url: https://github.com/enchance/fastbase
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.footer
+    - content.code.copy
+    - navigation.top
+plugins:
+  - search
+  - social
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            heading_level: 3
+            show_root_toc_entry: false
+            show_category_heading: true
+            docstring_style: sphinx
+            docstring_section_style: spacy
+            show_if_no_docstring: true
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/enchance/fastbase
+extra_css:
+  - assets/styles.css
+copyright: Copyright 2023 <a href="https://github.com/enchance"  target="_blank" rel="noopener">Enchance</a>
+nav:
+  - Usage: index.md
+  - Class Reference:
+      - Fastbase: class/fastbase.md
+      - FastbaseDependency: class/fastbase-dependency.md
+  - Model Reference:
+      - Group: models/group.md
+      - Role: models/role.md
+      - UserMod: models/usermod.md

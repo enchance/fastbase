@@ -1,16 +1,16 @@
 from typing import Self
-from sqlmodel import SQLModel, Field, String
+from sqlmodel import SQLModel, Field, String, select
 from sqlalchemy import Column
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.exc import IntegrityError
 
-from .mixins import IntPK
+from .mixins import IntPK, UpdatedAtMixin
 from ..utils import modstr
 from ..schemas import *
 
 
-class Group(IntPK, SQLModel, table=True):
+class Group(IntPK, UpdatedAtMixin, SQLModel, table=True):
     __tablename__ = 'auth_group'
     name: str = Field(max_length=20, unique=True)
     description: str = Field(max_length=199, default='')
@@ -19,10 +19,10 @@ class Group(IntPK, SQLModel, table=True):
     def __repr__(self):
         return modstr(self, 'name')
 
-    # TESTME: Untested
     @classmethod
-    async def create(cls, session: AsyncSession, *, name: str,  permissions: set,
-                     description: str | None = None) ->Self:
+    async def create(cls, session: AsyncSession, *,
+                     name: str,  permissions: set | None = None,
+                     description: str | None = None) -> Self:
         """Create a new group. Requires group.create permission."""
         try:
             group = cls(name=name, permissions=permissions, description=description)
@@ -33,32 +33,37 @@ class Group(IntPK, SQLModel, table=True):
         except IntegrityError:
             raise
 
-    # TESTME: Untested
+    # PLACEHOLDER: To follow
     @classmethod
-    async def append(cls, session: AsyncSession, id: int, permissions: set) -> Self:
+    async def delete(cls, name: str):
+        """Delete a group. Updates cache."""
+        pass
+
+    async def add_all(self, session: AsyncSession, permissions: set[str]):
         """Append new permissions to group. Requires group.update permission."""
-        if group := await session.get(cls, id):
-            group.permissions = {*group.permissions, *permissions}
-            session.add(group)
-            await session.commit()
-        return group
+        self.permissions = {*self.permissions, *permissions}                # noqa
+        session.add(self)
+        await session.commit()
 
-    # TESTME: Untested
-    @classmethod
-    async def reset(cls, session: AsyncSession, id: int, permissions: set = None) -> Self:
+    async def reset(self, session: AsyncSession, permissions: set[str] | None = None):
         """Reset permissions. Requires group.reset permission."""
-        if group := await session.get(cls, id):
-            group.permissions = permissions or {i for i in GroupEnum}
-            session.add(group)
-            await session.commit()
-        return group
+        self.permissions = permissions or []
+        session.add(self)
+        await session.commit()
+
+    async def describe(self, session: AsyncSession, description: str | None = None):
+        """Change group description. Requires group.update permission."""
+        self.description = description or ''
+        await session.commit()
 
     # TESTME: Untested
     @classmethod
-    async def describe(cls, session: AsyncSession, id: int, description: str) -> Self:
-        """Change group description. Requires group.update permission."""
-        if group := await session.get(cls, id):
-            group.description = description
-            session.add(group)
-            await session.commit()
-        return group
+    async def collate(cls, session: AsyncSession, nameset: set[str]) -> set[str]:
+        stmt = select(cls.permissions).where(cls.name.in_(nameset))
+        edata = await session.exec(stmt)
+        alldata = edata.all()
+
+        ss = set()
+        for i in alldata:
+            ss.update(i)
+        return ss

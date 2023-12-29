@@ -1,0 +1,1 @@
+::: fastbase.models.Group

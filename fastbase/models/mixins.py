@@ -20,7 +20,7 @@ class DeletedAtMixin(SQLModel):
     deleted_at: datetime | None = Field(sa_column=Column(DateTime(timezone=True), nullable=True))
 
 
-class DTMixin(CreatedAtMixin, UpdatedAtMixin, DeletedAtMixin, SQLModel):
+class DTMixin(CreatedAtMixin, UpdatedAtMixin, SQLModel):
     pass
 
 

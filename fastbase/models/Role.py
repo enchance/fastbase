@@ -1,15 +1,17 @@
+import itertools
 from typing import Self
-from sqlmodel import SQLModel, Field, String
+from sqlmodel import SQLModel, Field, String, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.exc import IntegrityError
 
-from .mixins import IntPK
+from .mixins import IntPK, UpdatedAtMixin
 from ..utils import modstr
+from .Group import Group
 
 
-class Role(IntPK, SQLModel, table=True):
+class Role(IntPK, UpdatedAtMixin, SQLModel, table=True):
     __tablename__ = 'auth_role'
     name: str = Field(max_length=20, unique=True)
     description: str | None = Field(max_length=199, default='')
@@ -50,3 +52,22 @@ class Role(IntPK, SQLModel, table=True):
             session.add(role)
             await session.commit()
         return role
+
+
+class RoleService:
+    @classmethod
+    async def fetch_group_names(cls, session: AsyncSession, role: str) -> set[str]:
+        stmt = select(Role.groups).where(Role.name == role)
+        execdata = await session.exec(stmt)
+        ll = execdata.one()
+        return set(ll)
+
+
+class PermissionService:
+    @classmethod
+    async def fetch_permissions(cls, session: AsyncSession, groups: set[str]) -> set[str]:
+        stmt = select(Group.permissions).where(Group.name.in_(groups))
+        execdata = await session.exec(stmt)
+        datalist = execdata.all()
+        datalist = set(itertools.chain.from_iterable(datalist))
+        return datalist

@@ -2,67 +2,43 @@ import threading
 from typing import Type, Annotated, Self, Callable, Awaitable, TypeVar
 from fastapi import APIRouter, Header, Depends, Body
 from firebase_admin import auth
-from pydantic import EmailStr
-from icecream import ic
-from sqlmodel import select
-from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio.engine import AsyncEngine
 from redis import Redis
 
 from .models import *
 from .schemas import *
-from .exceptions import InvalidToken, UserNotFoundError
+from .exceptions import InvalidToken, UserNotFoundError, CallbackError
 from .globals import ic
+
 
 
 U = TypeVar('U', bound=UserMod)
 
 
-class Fastbase:
-    _instance = None
-    _lock = threading.Lock()
+class FastbaseDependency:
     engine: AsyncEngine
-    redis: Redis | None
     User: Type[UserMod]
-    user_schema: Type[UserBaseSchema]
-    user_defaults: dict
-    # Group = Gr
-    # Role = Rl
-    post_create: Callable[[AsyncSession, UserMod], Awaitable[None]]
-
-
-    def __new__(cls):
-        if cls._instance is None:
-            with cls._lock:
-                if not cls._instance:
-                    cls._instance = super().__new__(cls)
-        return cls._instance
-
-    # TESTME: Untested
-    def initialize(self, *,
-                   engine: AsyncEngine,
-                   redis: Redis | None = None,
-                   user_model: Type[UserMod],
-                   user_defaults: dict | None = None,
-                   post_create: Callable[[AsyncSession, U], Awaitable[None]] = None):
-        self.engine = engine
-        self.redis = redis
-        self.User = user_model
-        self.user_defaults = user_defaults or {}
-        self.post_create = post_create
-
 
     # TESTME: Untested
     @staticmethod
     def verify_idtoken(authorization: Annotated[str, Header()]) -> str:
         """
-        Dependency to verify if an idtoken is valid.
-        :param authorization:   Google idtoken
-        :return:                Token data
-        :raises InvalidToken:
+        Dependency to verify if a Google **idtoken** is valid. Out of the decrypted data only the email is returned.
+
+        !!! tip "Use with"
+            Use with the `current_user` dependency which gets the User based on the email.
+
+        ??? example
+
+            ```python
+            @app.get('/', email: Annotated[str, Depends(verify_idtoken)]):
+                # Header:  Authorization=Bearer abc123...
+                ...
+            ```
+
+        :param authorization:   Bearer token taken taken from Google idtoken
+        :return:                Decrypted token data
+        :raises InvalidToken:   Token cannot be used e.g. it's expired, malformed, etc.
         """
-        # TESTME: Untested
         try:
             token = authorization.split(' ')[1]
             token_data = auth.verify_id_token(token)
@@ -70,23 +46,42 @@ class Fastbase:
         except Exception:
             raise InvalidToken()
 
+    # TESTME: Untested
+    async def current_user(self, email: Annotated[str, Depends(verify_idtoken)]) -> Type[U]:
+        """
+        Dependency for getting the user by their verified idtoken.
+
+        !!! tip "Use with"
+            Use with the `verify_idtoken` dependency which gets the User based on the email.
+
+        ??? example
+
+            ```python
+            @app.get('/', user: Annotated[User, Depends(current_user)]):
+                ...
+            ```
+
+
+        :param email:   Email taken from the bearer token
+        :return:        Valid user
+        :raises UserNotFoundError:  The user who owns the email doesn't exist
+        """
+        return await self._current_user(email)
 
     # TESTME: Untested
-    async def current_user(self, email: Annotated[str, Depends(verify_idtoken)]) -> Type[UserMod]:
+    async def _current_user(self, email: str) -> Type[U]:
         """
-        Dependency that returns a saved User entry from either redis or db.
+        Get user by email for use in dependencies.
         :param email:   Email taken from the idtoken
         :return:        User
         :raises UserNotFoundError:
         """
-        # TESTME: Untested
         try:
             async with AsyncSession(self.engine) as session:
                 user = await self.User.get_by_email(session, email)
                 return user
-        except Exception as e:
+        except Exception as _:
             raise UserNotFoundError()
-
 
     # TODO: Dependency verify_device for app_check
     # def verify_device(tago_appcheck: Annotated[str, Header()], tago_token: Annotated[str, Header()]) -> dict:
@@ -114,12 +109,50 @@ class Fastbase:
     #         raise InvalidToken()
 
 
+class Fastbase(FastbaseDependency):
+    _instance = None
+    _lock = threading.Lock()
+    engine: AsyncEngine
+    redis: Redis | None
+    User: Type[UserMod]
+    user_defaults: dict
+    post_create: Callable[[AsyncSession, U], Awaitable[None]] | None
+
+
+    def __new__(cls):
+        """Singleton pattern"""
+        if cls._instance is None:
+            with cls._lock:
+                if not cls._instance:
+                    cls._instance = super().__new__(cls)
+        return cls._instance
+
+    # TESTME: Untested
+    def initialize(self, *,
+                   engine: AsyncEngine,
+                   redis: Redis | None = None,
+                   user_model: Type[UserMod],
+                   user_defaults: dict | None = None,
+                   post_create: Callable[[AsyncSession, U], Awaitable[None]] | None = None):
+        """Use instead of __init__ since it uses the singleton pattern."""
+        self.engine = engine
+        self.redis = redis
+        self.User = user_model
+        self.user_defaults = user_defaults or {}
+        self.post_create = post_create
+
+
     # TESTME: Untested
     def get_signin_router(self, user_schema: Type[UserBaseSchema] = UserBaseSchema):
+        """
+        Router for when user signs in. An account is created in the db if the user doesn't exist.
+        :param user_schema: Response model
+        :return:
+        """
         router = APIRouter()
 
         @router.post('/signin', response_model=user_schema)
-        async def signin(token: Annotated[str, Body()]) -> Type[Self]:
+        async def signin(token: Annotated[str, Body(embed=True)]) -> Type[Self]:
             try:
                 token_data = auth.verify_id_token(token)
             except Exception:
@@ -127,16 +160,20 @@ class Fastbase:
 
             if email := token_data.get('email'):
                 async with AsyncSession(self.engine) as session:
-                    exists = await self.User.exists(session, EmailStr(email))
+                    exists = await self.User.exists(session, EmailStr(email))   # noqa
 
                     if not exists:
                         display, *_ = email.partition('@')
-                        user = self.User(email=email, username=email, display=display, **self.user_defaults)
-                        ic(user)
+                        user = self.User(email=email, display=display, username=email, **self.user_defaults)
                         session.add(user)
                         await session.commit()
                         await session.refresh(user)
-                        self.post_create and await self.post_create(session, user)
+
+                        if self.post_create:
+                            try:
+                                await self.post_create(session, user)
+                            except Exception:
+                                raise CallbackError()
                     else:
                         user = await self.User.get_by_email(session, email)
                     return user
