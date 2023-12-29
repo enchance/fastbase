@@ -114,7 +114,7 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('group.attach'):
             raise PermissionsException()
 
-        if not name.strip():
+        if not name.strip() or self.email == recipient.email:
             return
 
         groups = _attach(name)
@@ -152,7 +152,7 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('group.detach'):
             raise PermissionsException()
 
-        if not name.strip():
+        if not name.strip() or self.email == recipient.email:
             return
 
         groups = _detach(name)
@@ -193,7 +193,7 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('permission.attach'):
             raise PermissionsException()
 
-        if not perm.strip():
+        if not perm.strip() or self.email == recipient.email:
             return
 
         permissions = _attach(perm)
@@ -231,7 +231,7 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('permission.detach'):
             raise PermissionsException()
 
-        if not perm.strip():
+        if not perm.strip() or self.email == recipient.email:
             return
 
         permissions = _detach(perm)
@@ -259,7 +259,7 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('ban.attach'):
             raise PermissionsException()
 
-        if recipient.banned_at is not None:
+        if recipient.banned_at is not None or self.email == recipient.email:
             return
 
         now = arrow.utcnow().datetime
@@ -273,8 +273,8 @@ class UserMod(DTMixin, UuidPK, SQLModel):
 
     # TESTME: Untested
     async def unban(self, session: AsyncSession, recipient: Self,
-                    *, caching: Callable[[str], None] | None = None,
-                    async_callback: Callable[[str], Awaitable[None]] | None = None):
+                    *, caching: Callable[[str, None], None] | None = None,
+                    async_callback: Callable[[str, None], Awaitable[None]] | None = None):
         """
         Unban user.
         :param session:     AsyncSession
@@ -287,13 +287,13 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('ban.detach'):
             raise PermissionsException()
 
-        if recipient.banned_at is None:
+        if recipient.banned_at is None or self.email == recipient.email:
             return
 
         recipient.banned_at = None
         await session.commit()
 
         if caching:
-            caching(recipient.email)
+            caching(recipient.email, None)
         if async_callback:
-            await async_callback(recipient.email)
+            await async_callback(recipient.email, None)
