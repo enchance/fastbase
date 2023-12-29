@@ -113,6 +113,9 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('group.attach'):
             raise PermissionsException()
 
+        if not name.strip():
+            return
+
         groups = _attach(name)
         recipient.groups = groups
         await session.commit()
@@ -147,6 +150,9 @@ class UserMod(DTMixin, UuidPK, SQLModel):
 
         if not await self.has('group.detach'):
             raise PermissionsException()
+
+        if not name.strip():
+            return
 
         groups = _detach(name)
         recipient.groups = groups
@@ -186,6 +192,9 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('permission.attach'):
             raise PermissionsException()
 
+        if not perm.strip():
+            return
+
         permissions = _attach(perm)
         recipient.permissions = permissions
         await session.commit()
@@ -220,6 +229,9 @@ class UserMod(DTMixin, UuidPK, SQLModel):
 
         if not await self.has('permission.detach'):
             raise PermissionsException()
+
+        if not perm.strip():
+            return
 
         permissions = _detach(perm)
         recipient.permissions = permissions
