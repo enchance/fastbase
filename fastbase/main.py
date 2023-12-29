@@ -2,12 +2,6 @@ import threading
 from typing import Type, Annotated, Self, Callable, Awaitable, TypeVar
 from fastapi import APIRouter, Header, Depends, Body
 from firebase_admin import auth
-from pydantic import EmailStr
-from icecream import ic
-from sqlmodel import select
-from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio.engine import AsyncEngine
 from redis import Redis
 
 from .models import *
@@ -122,7 +116,7 @@ class Fastbase(FastbaseDependency):
     redis: Redis | None
     User: Type[UserMod]
     user_defaults: dict
-    post_create: Callable[[AsyncSession, UserMod], Awaitable[None]]
+    post_create: Callable[[AsyncSession, U], Awaitable[None]] | None
 
 
     def __new__(cls):

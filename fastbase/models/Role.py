@@ -1,3 +1,4 @@
+import itertools
 from typing import Self
 from sqlmodel import SQLModel, Field, String, select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -7,6 +8,7 @@ from sqlalchemy.exc import IntegrityError
 
 from .mixins import IntPK, UpdatedAtMixin
 from ..utils import modstr
+from .Group import Group
 
 
 class Role(IntPK, UpdatedAtMixin, SQLModel, table=True):
@@ -60,3 +62,12 @@ class RoleService:
         ll = execdata.one()
         return set(ll)
 
+
+class PermissionService:
+    @classmethod
+    async def fetch_permissions(cls, session: AsyncSession, groups: set[str]) -> set[str]:
+        stmt = select(Group.permissions).where(Group.name.in_(groups))
+        execdata = await session.exec(stmt)
+        datalist = execdata.all()
+        datalist = set(itertools.chain.from_iterable(datalist))
+        return datalist
