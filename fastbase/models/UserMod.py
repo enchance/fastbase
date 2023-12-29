@@ -1,3 +1,4 @@
+import arrow
 from uuid import UUID
 from datetime import datetime
 from typing import Type, Self, Callable, Awaitable
@@ -241,3 +242,58 @@ class UserMod(DTMixin, UuidPK, SQLModel):
             caching(recipient.email, list(permissions))
         if async_callback:
             await async_callback(recipient.email, list(permissions))
+
+    # TESTME: Untested
+    async def ban(self, session: AsyncSession, recipient: Self,
+                  *, caching: Callable[[str, datetime], None] | None = None,
+                  async_callback: Callable[[str, datetime], Awaitable[None]] | None = None):
+        """
+        Ban user.
+        :param session:     AsyncSession
+        :param recipient:   The user to ban
+        :param caching:     Callback for caching data
+        :param async_callback:    Async callback for generic use
+        :raises PermissionsException:
+        :return:            None
+        """
+        if not await self.has('ban.attach'):
+            raise PermissionsException()
+
+        if recipient.banned_at is not None:
+            return
+
+        now = arrow.utcnow().datetime
+        recipient.banned_at = now
+        await session.commit()
+
+        if caching:
+            caching(recipient.email, now)
+        if async_callback:
+            await async_callback(recipient.email, now)
+
+    # TESTME: Untested
+    async def unban(self, session: AsyncSession, recipient: Self,
+                    *, caching: Callable[[str], None] | None = None,
+                    async_callback: Callable[[str], Awaitable[None]] | None = None):
+        """
+        Unban user.
+        :param session:     AsyncSession
+        :param recipient:   The user to unban
+        :param caching:     Callback for caching data
+        :param async_callback:    Async callback for generic use
+        :raises PermissionsException:
+        :return:            None
+        """
+        if not await self.has('ban.detach'):
+            raise PermissionsException()
+
+        if recipient.banned_at is None:
+            return
+
+        recipient.banned_at = None
+        await session.commit()
+
+        if caching:
+            caching(recipient.email)
+        if async_callback:
+            await async_callback(recipient.email)
