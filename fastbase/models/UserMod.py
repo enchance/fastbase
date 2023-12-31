@@ -11,7 +11,7 @@ from sqlalchemy.exc import NoResultFound
 from datetime import date
 from pydantic import EmailStr
 from icecream import ic
-from fastbase.exceptions import PermissionsException
+from fastbase.exceptions import PermissionsException, AppException
 
 from .mixins import DTMixin, UuidPK, UpdatedAtMixin, IntPK
 from .Role import Role
@@ -45,33 +45,14 @@ class UserMod(DTMixin, UuidPK, SQLModel):
     def __repr__(self):
         return modstr(self, 'email')
 
-    # TESTME: Untested
-    @classmethod
-    async def get_by_email(cls, session: AsyncSession, email: str) -> Type[Self]:
-        """
-        Get User by their email.
-        :param session:     session
-        :param email:       User email
-        :return:            User
-        :raises NoResultFound: User doesn't exist
-        """
-        stmt = select(cls).where(cls.email == email)
-        execdata = await session.exec(stmt)
-        data = execdata.one()
-        return data
+    @property
+    def is_super(self) -> bool:
+        return self.role == 'super'
 
     # TESTME: Untested
     @classmethod
-    async def get_by_id(cls, session: AsyncSession, uid: str) -> Type[Self]:
-        """
-        Get User by their id.
-        :param session:     session
-        :param uid:         User id
-        :return:            User
-        :raises NoResultFound: User doesn't exist
-        """
-        data = await session.get(cls, UUID(uid))
-        return data
+    async def get_by_email(cls, session: AsyncSession, email: str) -> Type[Self]:
+        raise NotImplementedError()
 
     # TESTME: Untested
     @classmethod
@@ -114,8 +95,11 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('group.attach'):
             raise PermissionsException()
 
-        if not name.strip() or self.email == recipient.email:
+        if not name.strip():
             return
+
+        if not self.is_super and self.email == recipient.email:
+            raise AppException('ILLEGAL_ACTION: You cannot modify your own groups.')
 
         groups = _attach(name)
         recipient.groups = groups
@@ -152,8 +136,11 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('group.detach'):
             raise PermissionsException()
 
-        if not name.strip() or self.email == recipient.email:
+        if not name.strip():
             return
+
+        if not self.is_super and self.email == recipient.email:
+            raise AppException('ILLEGAL_ACTION: You cannot modify your own groups.')
 
         groups = _detach(name)
         recipient.groups = groups
@@ -193,8 +180,11 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('permission.attach'):
             raise PermissionsException()
 
-        if not perm.strip() or self.email == recipient.email:
+        if not perm.strip():
             return
+
+        if not self.is_super and self.email == recipient.email:
+            raise AppException('ILLEGAL_ACTION: You cannot modify your own permissions.')
 
         permissions = _attach(perm)
         recipient.permissions = permissions
@@ -231,8 +221,11 @@ class UserMod(DTMixin, UuidPK, SQLModel):
         if not await self.has('permission.detach'):
             raise PermissionsException()
 
-        if not perm.strip() or self.email == recipient.email:
+        if not perm.strip():
             return
+
+        if not self.is_super and self.email == recipient.email:
+            raise AppException('ILLEGAL_ACTION: You cannot modify your own permissions.')
 
         permissions = _detach(perm)
         recipient.permissions = permissions
