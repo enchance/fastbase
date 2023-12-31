@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.8">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
       
       
 
@@ -90,13 +90,16 @@
     <body dir="ltr">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
         
-        <a href="#fastbase.models.Group-attributes" class="md-skip">
+        <a href="#fastbase.models.rbac.Group-attributes" class="md-skip">
           Skip to content
         </a>
       
@@ -138,9 +141,6 @@
         </div>
       </div>
     </div>
-    
-    
-      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
     
@@ -186,7 +186,7 @@
         <a href="https://github.com/enchance/fastbase" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     enchance/fastbase
@@ -298,7 +298,7 @@
       <a href="https://github.com/enchance/fastbase" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     enchance/fastbase
@@ -310,7 +310,6 @@
     
       
       
-  
   
   
   
@@ -330,7 +329,6 @@
     
       
       
-  
   
   
   
@@ -373,7 +371,6 @@
   
   
   
-  
     <li class="md-nav__item">
       <a href="../../class/fastbase/" class="md-nav__link">
         
@@ -391,7 +388,6 @@
             
               
                 
-  
   
   
   
@@ -422,7 +418,6 @@
   
   
     
-  
   
   
     
@@ -466,7 +461,6 @@
     
   
   
-  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
@@ -508,47 +502,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#fastbase.models.Group-attributes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Attributes
-    </span>
+  <a href="#fastbase.models.rbac.Group-attributes" class="md-nav__link">
+    Attributes
   </a>
   
     <nav class="md-nav" aria-label="Attributes">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.__tablename__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __tablename__
-    </span>
+  <a href="#fastbase.models.rbac.Group.__tablename__" class="md-nav__link">
+    __tablename__
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.description" class="md-nav__link">
-    <span class="md-ellipsis">
-      description
-    </span>
+  <a href="#fastbase.models.rbac.Group.description" class="md-nav__link">
+    description
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.name" class="md-nav__link">
-    <span class="md-ellipsis">
-      name
-    </span>
+  <a href="#fastbase.models.rbac.Group.name" class="md-nav__link">
+    name
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.permissions" class="md-nav__link">
-    <span class="md-ellipsis">
-      permissions
-    </span>
+  <a href="#fastbase.models.rbac.Group.permissions" class="md-nav__link">
+    permissions
   </a>
   
 </li>
@@ -559,74 +543,58 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#fastbase.models.Group-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Functions
-    </span>
+  <a href="#fastbase.models.rbac.Group-functions" class="md-nav__link">
+    Functions
   </a>
   
     <nav class="md-nav" aria-label="Functions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.__repr__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __repr__()
-    </span>
+  <a href="#fastbase.models.rbac.Group.__repr__" class="md-nav__link">
+    __repr__()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.add_all" class="md-nav__link">
-    <span class="md-ellipsis">
-      add_all()
-    </span>
+  <a href="#fastbase.models.rbac.Group.add_all" class="md-nav__link">
+    add_all()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.collate" class="md-nav__link">
-    <span class="md-ellipsis">
-      collate()
-    </span>
+  <a href="#fastbase.models.rbac.Group.collate" class="md-nav__link">
+    collate()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.create" class="md-nav__link">
-    <span class="md-ellipsis">
-      create()
-    </span>
+  <a href="#fastbase.models.rbac.Group.create" class="md-nav__link">
+    create()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.delete" class="md-nav__link">
-    <span class="md-ellipsis">
-      delete()
-    </span>
+  <a href="#fastbase.models.rbac.Group.delete" class="md-nav__link">
+    delete()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.describe" class="md-nav__link">
-    <span class="md-ellipsis">
-      describe()
-    </span>
+  <a href="#fastbase.models.rbac.Group.describe" class="md-nav__link">
+    describe()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.reset" class="md-nav__link">
-    <span class="md-ellipsis">
-      reset()
-    </span>
+  <a href="#fastbase.models.rbac.Group.reset" class="md-nav__link">
+    reset()
   </a>
   
 </li>
@@ -650,7 +618,6 @@
   
   
   
-  
     <li class="md-nav__item">
       <a href="../role/" class="md-nav__link">
         
@@ -668,7 +635,6 @@
             
               
                 
-  
   
   
   
@@ -719,47 +685,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#fastbase.models.Group-attributes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Attributes
-    </span>
+  <a href="#fastbase.models.rbac.Group-attributes" class="md-nav__link">
+    Attributes
   </a>
   
     <nav class="md-nav" aria-label="Attributes">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.__tablename__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __tablename__
-    </span>
+  <a href="#fastbase.models.rbac.Group.__tablename__" class="md-nav__link">
+    __tablename__
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.description" class="md-nav__link">
-    <span class="md-ellipsis">
-      description
-    </span>
+  <a href="#fastbase.models.rbac.Group.description" class="md-nav__link">
+    description
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.name" class="md-nav__link">
-    <span class="md-ellipsis">
-      name
-    </span>
+  <a href="#fastbase.models.rbac.Group.name" class="md-nav__link">
+    name
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.permissions" class="md-nav__link">
-    <span class="md-ellipsis">
-      permissions
-    </span>
+  <a href="#fastbase.models.rbac.Group.permissions" class="md-nav__link">
+    permissions
   </a>
   
 </li>
@@ -770,74 +726,58 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#fastbase.models.Group-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Functions
-    </span>
+  <a href="#fastbase.models.rbac.Group-functions" class="md-nav__link">
+    Functions
   </a>
   
     <nav class="md-nav" aria-label="Functions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.__repr__" class="md-nav__link">
-    <span class="md-ellipsis">
-      __repr__()
-    </span>
+  <a href="#fastbase.models.rbac.Group.__repr__" class="md-nav__link">
+    __repr__()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.add_all" class="md-nav__link">
-    <span class="md-ellipsis">
-      add_all()
-    </span>
+  <a href="#fastbase.models.rbac.Group.add_all" class="md-nav__link">
+    add_all()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.collate" class="md-nav__link">
-    <span class="md-ellipsis">
-      collate()
-    </span>
+  <a href="#fastbase.models.rbac.Group.collate" class="md-nav__link">
+    collate()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.create" class="md-nav__link">
-    <span class="md-ellipsis">
-      create()
-    </span>
+  <a href="#fastbase.models.rbac.Group.create" class="md-nav__link">
+    create()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.delete" class="md-nav__link">
-    <span class="md-ellipsis">
-      delete()
-    </span>
+  <a href="#fastbase.models.rbac.Group.delete" class="md-nav__link">
+    delete()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.describe" class="md-nav__link">
-    <span class="md-ellipsis">
-      describe()
-    </span>
+  <a href="#fastbase.models.rbac.Group.describe" class="md-nav__link">
+    describe()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#fastbase.models.Group.reset" class="md-nav__link">
-    <span class="md-ellipsis">
-      reset()
-    </span>
+  <a href="#fastbase.models.rbac.Group.reset" class="md-nav__link">
+    reset()
   </a>
   
 </li>
@@ -878,7 +818,7 @@
 
 
             <details class="quote">
-              <summary>Source code in <code>fastbase/models/Group.py</code></summary>
+              <summary>Source code in <code>fastbase/models/rbac.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-13">13</a></span>
 <span class="normal"><a href="#__codelineno-0-14">14</a></span>
 <span class="normal"><a href="#__codelineno-0-15">15</a></span>
@@ -984,7 +924,7 @@
 </span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a>    <span class="c1"># TESTME: Untested</span>
 </span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a>    <span class="nd">@classmethod</span>
 </span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">collate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">,</span> <span class="n">nameset</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a>        <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">permissions</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">in_</span><span class="p">(</span><span class="n">nameset</span><span class="p">))</span>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a>        <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">permissions</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">in_</span><span class="p">(</span><span class="n">nameset</span><span class="p">))</span>     <span class="c1"># noqa</span>
 </span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a>        <span class="n">edata</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
 </span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a>        <span class="n">alldata</span> <span class="o">=</span> <span class="n">edata</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 </span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a>
@@ -1003,14 +943,14 @@
 
 
 
-<h3 id="fastbase.models.Group-attributes">Attributes</h3>
+<h3 id="fastbase.models.rbac.Group-attributes">Attributes</h3>
 
 <div class="doc doc-object doc-attribute">
 
 
 
 
-<h4 id="fastbase.models.Group.__tablename__" class="doc doc-heading">
+<h4 id="fastbase.models.rbac.Group.__tablename__" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;auth_group&#39;</span></code>
   
   <span class="doc doc-labels">
@@ -1031,7 +971,7 @@
 
 
 
-<h4 id="fastbase.models.Group.description" class="doc doc-heading">
+<h4 id="fastbase.models.rbac.Group.description" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">199</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
@@ -1052,7 +992,7 @@
 
 
 
-<h4 id="fastbase.models.Group.name" class="doc doc-heading">
+<h4 id="fastbase.models.rbac.Group.name" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
@@ -1073,7 +1013,7 @@
 
 
 
-<h4 id="fastbase.models.Group.permissions" class="doc doc-heading">
+<h4 id="fastbase.models.rbac.Group.permissions" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">permissions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">sa_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ARRAY</span><span class="p">(</span><span class="n">String</span><span class="p">)),</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span></code>
   
   <span class="doc doc-labels">
@@ -1089,7 +1029,7 @@
 
 </div>
 
-<h3 id="fastbase.models.Group-functions">Functions</h3>
+<h3 id="fastbase.models.rbac.Group-functions">Functions</h3>
 
 
 <div class="doc doc-object doc-function">
@@ -1097,7 +1037,7 @@
 
 
 
-<h4 id="fastbase.models.Group.__repr__" class="doc doc-heading">
+<h4 id="fastbase.models.rbac.Group.__repr__" class="doc doc-heading">
           <code class="highlight language-python"><span class="fm">__repr__</span><span class="p">()</span></code>
 
 </h4>
@@ -1106,7 +1046,7 @@
   <div class="doc doc-contents ">
 
           <details class="quote">
-            <summary>Source code in <code>fastbase/models/Group.py</code></summary>
+            <summary>Source code in <code>fastbase/models/rbac.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-19">19</a></span>
 <span class="normal"><a href="#__codelineno-0-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a>    <span class="k">return</span> <span class="n">modstr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span>
@@ -1122,7 +1062,7 @@
 
 
 
-<h4 id="fastbase.models.Group.add_all" class="doc doc-heading">
+<h4 id="fastbase.models.rbac.Group.add_all" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">add_all</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">permissions</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
@@ -1137,7 +1077,7 @@
       <p>Append new permissions to group. Requires group.update permission.</p>
 
           <details class="quote">
-            <summary>Source code in <code>fastbase/models/Group.py</code></summary>
+            <summary>Source code in <code>fastbase/models/rbac.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-42">42</a></span>
 <span class="normal"><a href="#__codelineno-0-43">43</a></span>
 <span class="normal"><a href="#__codelineno-0-44">44</a></span>
@@ -1159,7 +1099,7 @@
 
 
 
-<h4 id="fastbase.models.Group.collate" class="doc doc-heading">
+<h4 id="fastbase.models.rbac.Group.collate" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">collate</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">nameset</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
@@ -1173,7 +1113,7 @@
   <div class="doc doc-contents ">
 
           <details class="quote">
-            <summary>Source code in <code>fastbase/models/Group.py</code></summary>
+            <summary>Source code in <code>fastbase/models/rbac.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-60">60</a></span>
 <span class="normal"><a href="#__codelineno-0-61">61</a></span>
 <span class="normal"><a href="#__codelineno-0-62">62</a></span>
@@ -1185,7 +1125,7 @@
 <span class="normal"><a href="#__codelineno-0-68">68</a></span>
 <span class="normal"><a href="#__codelineno-0-69">69</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a><span class="nd">@classmethod</span>
 </span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">collate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">,</span> <span class="n">nameset</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a>    <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">permissions</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">in_</span><span class="p">(</span><span class="n">nameset</span><span class="p">))</span>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a>    <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">permissions</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">in_</span><span class="p">(</span><span class="n">nameset</span><span class="p">))</span>     <span class="c1"># noqa</span>
 </span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a>    <span class="n">edata</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
 </span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a>    <span class="n">alldata</span> <span class="o">=</span> <span class="n">edata</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 </span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a>
@@ -1205,7 +1145,7 @@
 
 
 
-<h4 id="fastbase.models.Group.create" class="doc doc-heading">
+<h4 id="fastbase.models.rbac.Group.create" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">create</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">permissions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
@@ -1221,7 +1161,7 @@
       <p>Create a new group. Requires group.create permission.</p>
 
           <details class="quote">
-            <summary>Source code in <code>fastbase/models/Group.py</code></summary>
+            <summary>Source code in <code>fastbase/models/rbac.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-22">22</a></span>
 <span class="normal"><a href="#__codelineno-0-23">23</a></span>
 <span class="normal"><a href="#__codelineno-0-24">24</a></span>
@@ -1259,7 +1199,7 @@
 
 
 
-<h4 id="fastbase.models.Group.delete" class="doc doc-heading">
+<h4 id="fastbase.models.rbac.Group.delete" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">delete</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
@@ -1275,7 +1215,7 @@
       <p>Delete a group. Updates cache.</p>
 
           <details class="quote">
-            <summary>Source code in <code>fastbase/models/Group.py</code></summary>
+            <summary>Source code in <code>fastbase/models/rbac.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-37">37</a></span>
 <span class="normal"><a href="#__codelineno-0-38">38</a></span>
 <span class="normal"><a href="#__codelineno-0-39">39</a></span>
@@ -1295,7 +1235,7 @@
 
 
 
-<h4 id="fastbase.models.Group.describe" class="doc doc-heading">
+<h4 id="fastbase.models.rbac.Group.describe" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">describe</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
@@ -1310,7 +1250,7 @@
       <p>Change group description. Requires group.update permission.</p>
 
           <details class="quote">
-            <summary>Source code in <code>fastbase/models/Group.py</code></summary>
+            <summary>Source code in <code>fastbase/models/rbac.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-54">54</a></span>
 <span class="normal"><a href="#__codelineno-0-55">55</a></span>
 <span class="normal"><a href="#__codelineno-0-56">56</a></span>
@@ -1330,7 +1270,7 @@
 
 
 
-<h4 id="fastbase.models.Group.reset" class="doc doc-heading">
+<h4 id="fastbase.models.rbac.Group.reset" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">reset</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">permissions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
@@ -1345,7 +1285,7 @@
       <p>Reset permissions. Requires group.reset permission.</p>
 
           <details class="quote">
-            <summary>Source code in <code>fastbase/models/Group.py</code></summary>
+            <summary>Source code in <code>fastbase/models/rbac.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-48">48</a></span>
 <span class="normal"><a href="#__codelineno-0-49">49</a></span>
 <span class="normal"><a href="#__codelineno-0-50">50</a></span>
@@ -1373,22 +1313,11 @@
 
 
 
-
-
-  
-  
-
-
-
-
-
-
                 
               </article>
             </div>
           
           
-<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
@@ -1467,7 +1396,7 @@
       
     
     <a href="https://github.com/enchance/fastbase" target="_blank" rel="noopener" title="github.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
     </a>
   
 </div>
@@ -1485,7 +1414,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "content.code.copy", "navigation.top"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.81fa17fe.min.js"></script>
       
     
   </body>
