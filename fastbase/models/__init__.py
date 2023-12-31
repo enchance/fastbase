@@ -1,5 +1,4 @@
 from .mixins import *
 from .UserMod import *
-from .Group import *
-from .Role import *
+from .rbac import *
 from .optional import *

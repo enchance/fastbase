@@ -1,1 +1,1 @@
-::: fastbase.models.Group
+::: fastbase.models.rbac.Group

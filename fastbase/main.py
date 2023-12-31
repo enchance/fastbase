@@ -106,7 +106,13 @@ class Fastbase(FastbaseDependency):
     User: Type[USER]
 
     def __new__(cls):
-        """Singleton pattern"""
+        """
+        Singleton pattern
+        !!! note
+            - [https://stackabuse.com/creating-a-singleton-in-python/](https://stackabuse.com/creating-a-singleton-in-python/)
+            - [https://chat.openai.com/c/1305cb84-5417-4bbb-86b7-401346f846c9](https://chat.openai.com/c/1305cb84-5417-4bbb-86b7-401346f846c9)
+            - [https://bard.google.com/chat/e2fcdd7109d1a5c0](https://bard.google.com/chat/e2fcdd7109d1a5c0)
+        """
         with cls._lock:
             if not cls._instance:
                 cls._instance = super().__new__(cls)

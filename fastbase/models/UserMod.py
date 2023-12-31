@@ -14,7 +14,7 @@ from icecream import ic
 from fastbase.exceptions import PermissionsException, AppException
 
 from .mixins import DTMixin, UuidPK, UpdatedAtMixin, IntPK
-from .Role import Role
+from .rbac import Role
 from ..utils import modstr
 from ..exceptions import CallbackError
 

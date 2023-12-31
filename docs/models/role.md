@@ -1,1 +1,1 @@
-::: fastbase.models.Role
+::: fastbase.models.rbac.Role
